@@ -1,9 +1,10 @@
 #include <QtGui>
 #include <QtGui/QWidget>
+#include <QFileDialog>
 
 #include "ui_untitled.h"
 
-class Window : public QWidget
+class Window : public QMainWindow
 {
     Q_OBJECT
 
@@ -15,5 +16,16 @@ public:
 	~Window() {};
 
 private:
-    Ui::Form ui;
+    Ui::MainWindow ui;
+	QDir InputFile;
+	QDir OutputFile;
+	void connectActions();
+
+
+private slots:
+	void changeInFile();
+	void changeOutFile();
+	void UpdateInputPath();
+	void UpdateOutputPath();
+	void DoStuff();
 };

@@ -1,5 +1,4 @@
 #include "adt.h"
-#include "tools.h"
 //#include "debuglog.h"
 #include <QApplication>
 

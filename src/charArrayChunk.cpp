@@ -6,7 +6,7 @@ CharArrayChunk::CharArrayChunk(char* name, std::fstream& adtFile, unsigned int s
 	adtFile.seekg(startByte);
 	chunkHeader CHeader(adtFile);
 	size = CHeader.chunkSize;
-	std::cout << "read size = " << size << std::endl;
+	//std::cout << "read size = " << size << std::endl;
 	fileNames = new char[size];
 	adtFile.read(fileNames, size);
 	chunkName = name;
@@ -21,6 +21,6 @@ std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me){
 	chunkHeader CHeader(me.chunkName,me.size);
 	stream << CHeader;
 	stream.write(me.fileNames,me.size);
-	std::cout << "writing size = " << me.size << std::endl;
+	//std::cout << "writing size = " << me.size << std::endl;
 	return stream;
 };

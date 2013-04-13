@@ -27,7 +27,9 @@ void copyMCLQ(int argc, char* argv[])
 		adtFile.close();
 		adtFile2.close();
 	} else {
-		std::cout << "Erreur fichier.";
+		std::cout << "Erreur fichier." << std::endl;
+		std::cout << "to : " << argv[1] << std::endl;
+		std::cout << "from : " << argv[2] << std::endl;
 	}
 }
 
