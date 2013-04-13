@@ -13,8 +13,8 @@ int main(int argc, char* argv[])
 	//allWater(argc, argv);
 	QApplication app(argc, argv);
 	Window w;
+	w.show();
+    return app.exec();
 
 	//Rewrite(argc, argv);
-
-	return 0;
 }

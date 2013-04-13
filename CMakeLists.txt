@@ -28,53 +28,7 @@ find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtXml REQUIRED)
 # Qt setup
 include (${QT_USE_FILE})
 
-# Gather source files.
-set ( adtlib_sources
-    src/adt.cpp
-	src/charArrayChunk.cpp
-	src/chunkHeader.cpp
-	src/debuglog.cpp
-	src/main.cpp
-	src/MCNK.cpp
-	src/mfbo.cpp
-	src/Window.cpp
-)
-
-set ( adtlib_headers
-    src/adt.h
-	src/charArrayChunk.h
-	src/charArrayChunk1.h
-	src/chunkHeader.h
-	src/debuglog.h
-	src/IntArrayChunk.h
-	src/MCAL.h
-	src/MCCV.h
-	src/MCIN.h
-	src/MCLQ.h
-	src/MCLY.h
-	src/MCNK.h
-	src/MCNR.h
-	src/MCRF.h
-	src/MCSE.h
-	src/MCSH.h
-	src/MCVT.h
-	src/MDDF.h
-	src/MFBO.h
-	src/MH2O.h
-	src/MHDR.h
-	src/MMDX.h
-	src/MMID.h
-	src/MODF.h
-	src/MTEX.h
-	src/MTXF.h
-	src/MVER.h
-	src/MWID.h
-	src/MWMO.h
-	src/tools.h
-	src/ui_untitled.h
-	src/Window.h
-)
-	
+#sans effet
 set ( adtlib_misc
 	resource/untitled.ui
 )
@@ -95,11 +49,15 @@ if (WIN32)
     add_definitions (/vmg /D NOMINMAX /wd"4503" /wd"4996")
 endif (WIN32)
 
+file(GLOB_RECURSE SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h *.ui)
+
+source_group("sources"            REGULAR_EXPRESSION src/.*cpp)
+source_group("headers"            REGULAR_EXPRESSION src/.*h)
+source_group("resources"              REGULAR_EXPRESSION resource)
+
 add_executable ( 
 	AdtLib
-		${adtlib_sources}
-		${adtlib_headers}
-		${adblib_misc}
+		${SRCS}
 )
 
 target_link_libraries ( 
