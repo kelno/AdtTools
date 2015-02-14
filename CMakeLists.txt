@@ -7,11 +7,11 @@ cmake_minimum_required (VERSION 2.6)
 # Set this to more paths you windows guys need.
 if (WIN32)
   set ( CMAKE_INCLUDE_PATH
-        "D:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/"
+        "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/"
         "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/include/"
   )
   set ( CMAKE_LIBRARY_PATH
-        "D:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib/"
+        "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib/"
         "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/lib/"
   )
 endif( WIN32 )
@@ -23,7 +23,7 @@ set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_BUILD_TYPE "Release")
 
-find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtXml REQUIRED)
+find_package (Qt4 4.8 COMPONENTS QtCore QtGui REQUIRED)
 
 # Qt setup
 include (${QT_USE_FILE})
@@ -45,9 +45,10 @@ if (ALL_WARNINGS)
 endif (ALL_WARNINGS)
 
 # MSVC++ specific defines.
-if (WIN32)
-    add_definitions (/vmg /D NOMINMAX /wd"4503" /wd"4996")
-endif (WIN32)
+#if (WIN32)
+ #   add_definitions (/D NOMINMAX)
+#endif (WIN32)
+#see http://msdn.microsoft.com/en-us/library/hhzbb5c8.aspx
 
 file(GLOB_RECURSE SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h *.ui)
 

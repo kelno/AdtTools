@@ -23,7 +23,7 @@ void DebugLog::log(const char* str, ...) {
 		char buf[256];
 		va_list ap;
 		va_start(ap, str);
-		vsnprintf(buf,256, str, ap);
+		vsnprintf_s(buf,256, str, ap);
 		va_end(ap);
 		if (print)
 			std::cout << buf;

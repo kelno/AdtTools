@@ -13,7 +13,8 @@ public:
 		adtFile.read(reinterpret_cast<char *>(data), sizeof(MCNR));
 	}
 	friend std::ostream& operator<< (std::ostream &stream, MCNR& me) {
-		chunkHeader CHeader("MCNR",sizeof(data));
+		chunkHeader CHeader("MCNR",sizeof(char)*435);
+		//chunkHeader CHeader("MCNR",sizeof(data));
 		stream << CHeader;
 		stream.write(reinterpret_cast<char *>(me.data),sizeof(MCNR));
 
