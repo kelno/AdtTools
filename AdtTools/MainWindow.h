@@ -1,10 +1,10 @@
 #include <QtGui>
-#include <QtGui/QWidget>
+#include <QWidget>
 #include <QFileDialog>
 
-#include "ui_untitled.h"
+#include "ui_MainWindows.h"
 
-class Window : public QMainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -12,8 +12,8 @@ class Window : public QMainWindow
     	//void calcul() const;
 
 public:
-    Window(QWidget *parent = 0);
-	~Window() {};
+    MainWindow(QWidget *parent = 0);
+	~MainWindow() {};
 
 private:
     Ui::MainWindow ui;

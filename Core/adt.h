@@ -1,7 +1,5 @@
 /* 
-Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers screwed
-
-
+TODO : Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers screwed
 */
 #ifndef ADT_H
 #define ADT_H
@@ -25,9 +23,6 @@ Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers screwed
 #include "MCNK.h"
 #include "MFBO.h"
 #include "MTXF.h"
-
-
-//typedef unsigned int UINT32;
 
 class adt {
 public:

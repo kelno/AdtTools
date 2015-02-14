@@ -1,5 +1,9 @@
-cd D:\work\AdtLib\AdtLib\src
-echo %CD%
-moc window.h > moc.cpp
-uic ../resource/untitled.ui > ui_untitled.h
+@echo off
+
+cd D:\docs\code\AdtLib\sources\AdtTools
+::echo %CD%
+moc MainWindow.h > moc.cpp
+uic ui/mainwindow.ui > ui_mainwindows.h
+
+echo Done!
 pause

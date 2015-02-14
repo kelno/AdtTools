@@ -1,13 +1,15 @@
-#include "Window.h"
-#include "tools.h"
+#include "MainWindow.h"
 #include <string>
+#include <iostream>
 
-Window::Window(QWidget *parent) : QMainWindow(parent) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) 
+{
 	ui.setupUi(this);
 	connectActions();
 }
 
-void Window::connectActions() {
+void MainWindow::connectActions() 
+{
 	connect(ui.action_Quit, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
 	connect(ui.toolButton_browse_Input, SIGNAL(clicked()), this, SLOT(changeInFile()));
 	connect(ui.toolButton_browse_Output, SIGNAL(clicked()), this, SLOT(changeOutFile()));
@@ -16,7 +18,7 @@ void Window::connectActions() {
 	connect(ui.pushButton, SIGNAL(released()), this, SLOT(DoStuff()));
 }
 
-void Window::changeInFile()
+void MainWindow::changeInFile()
 {
     QString path = QFileDialog::getOpenFileName(this, tr("Input File"), InputFile.path(), tr("ADT (*.adt);;All files (*.*)"));
     if (!path.isNull())
@@ -26,7 +28,7 @@ void Window::changeInFile()
     }
 }
 
-void Window::changeOutFile()
+void MainWindow::changeOutFile()
 {
 	QString path = QFileDialog::getOpenFileName(this, tr("Ouput File"), OutputFile.path(), tr("ADT (*.adt);;All files (*.*)"));
     if (!path.isNull())
@@ -36,19 +38,19 @@ void Window::changeOutFile()
     }
 }
 
-void Window::UpdateInputPath() 
+void MainWindow::UpdateInputPath() 
 {
 	std::cout << "UpdateInputPath() " << ui.lineEdit_Input->text().toStdString() << std::endl;
 	InputFile.setPath(ui.lineEdit_Input->text());
 }
 
-void Window::UpdateOutputPath()
+void MainWindow::UpdateOutputPath()
 {
 	std::cout << "UpdateOutputPath() "  << ui.lineEdit_Output->text().toStdString() << std::endl;
 	OutputFile.setPath(ui.lineEdit_Output->text());
 }
 
-void Window::DoStuff()
+void MainWindow::DoStuff()
 {
 	std::string In = InputFile.path().toStdString();
 	std::string Out = OutputFile.path().toStdString();
@@ -56,5 +58,5 @@ void Window::DoStuff()
 	argv[0] = " ";
 	argv[1] = (char*)Out.c_str();
 	argv[2] = (char*)In.c_str();
-	copyMCLQ(3, argv);
+	//copyMCLQ(3, argv);
 }
