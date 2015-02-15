@@ -1,0 +1,13 @@
+needed :
+YOURAPP.exe
+icudt49.dll
+icuin49.dll
+icuuc49.dll
+libEGL.dll
+libGLESv2.dll
+Qt5Core.dll
+Qt5Gui.dll
+Qt5Widgets.dll
+platforms/qwindows.dll
+
+!! Le chemin de ce dernier (uniquement) n'est pas depuis le working directory mais depuis le dossier où est situé le .exe. Pratique, logique, intuitif, toussa.

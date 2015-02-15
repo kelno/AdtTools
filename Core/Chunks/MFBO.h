@@ -10,12 +10,11 @@ struct plane {
 class MFBO {
 public:
 	MFBO();
-    //MFBO(short* dataStartByte);
     void set(short min, short max);
     const short getMin();
     const short getMax();
-	bool isBroken();
-	void invert();
+	bool hasInvertedMinMax();
+	void invertMinMax();
 
 	MFBO(std::fstream& adtFile, unsigned int startByte);
 	friend std::ostream& operator<< (std::ostream &stream, MFBO& me){

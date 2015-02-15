@@ -2,7 +2,6 @@
 #define CHARARRAYCHUNK_H
 
 #include "chunkHeader.h"
-#include "debuglog.h"
 
 class CharArrayChunk {
 public:
@@ -11,13 +10,9 @@ public:
   char* chunkName;
 
   CharArrayChunk() {};
-  CharArrayChunk(char* name, std::fstream& adtFile, unsigned int startByte, DebugLog* debuglog);
-/*  unsigned int getSize() {
-	  return size;
-  };*/
-	friend std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me);
+  CharArrayChunk(char* name, std::fstream& adtFile, unsigned int startByte);
 
-	DebugLog* debug_log;
+  friend std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me);
 };
 
 

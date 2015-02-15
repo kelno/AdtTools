@@ -49,6 +49,19 @@ struct MCNKHeader // --schlumpf_ 17:01, 10 August 2009 (CEST), based on: 03-29-2
 //a chaque edit qui change la taille changer le mcin
 class MCNK {
 public:
+    enum
+    {
+        ENTRY_COUNT = 16*16,
+
+        //flags
+	    FLAG_MCSH = 1,
+	    FLAG_IMPASS = 2,
+	    FLAG_LQ_RIVER = 4,
+	    FLAG_LQ_OCEAN = 8,
+	    FLAG_LQ_MAGMA = 16,
+	    FLAG_MCCV = 32
+    };
+
 	//unsigned int totalSize;
 	MCIN* mcin;
     struct MCNKEntry {
@@ -62,20 +75,10 @@ public:
 		MCSE* mcse;
 		MCLQ* mclq;
 		MCCV* mccv;
-	} entries[16*16];
+	} entries[ENTRY_COUNT];
 
 	MCNK(std::fstream& adtFile, MCIN* mcin);
 	friend std::ostream& operator<< (std::ostream &stream, MCNK& me);
-};
-
-enum MCNK_flags
-{
-	MCNK_FLAG_MCSH = 1,
-	MCNK_FLAG_IMPASS = 2,
-	MCNK_FLAG_LQ_RIVER = 4,
-	MCNK_FLAG_LQ_OCEAN = 8,
-	MCNK_FLAG_LQ_MAGMA = 16,
-	MCNK_FLAG_MCCV = 32
 };
 
 #endif

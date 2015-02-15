@@ -25,7 +25,7 @@ const short MFBO::getMax()
 	return maximum.height[0][0];
 };
 
-bool MFBO::isBroken()
+bool MFBO::hasInvertedMinMax()
 {
 	if(maximum.height[0][0] < minimum.height[0][0])
 		return true;
@@ -33,7 +33,7 @@ bool MFBO::isBroken()
 		return false;
 };
 
-void MFBO::invert() 
+void MFBO::invertMinMax() 
 {
 	set(getMax(),getMin());
 };

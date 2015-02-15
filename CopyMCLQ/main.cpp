@@ -1,33 +1,60 @@
 #include <iostream>
+#include <cstdio>
 #include "adt.h"
+
+#define VERSION "0.1"
+
+void pauseAndExit()
+{
+    std::cout << "Press any key to exit...";
+    std::getchar();
+	exit(0);
+}
 
 void main(int argc, char* argv[])
 {
 	if(argc < 3)
 	{
-		std::cout << "AdtTools copyMCLQ \nUsage : adtools <to> <from>\n";
-		exit(0);
+		std::cout << "AdtTools CopyPreWotLKWater v" << VERSION << std::endl;
+        std::cout << std::endl;
+        std::cout << "Description : This tool copy 'MCLQ' water from one adt to another. This tool will NOT copy 'MH20' water, "
+                     "no water from LK maps or later will be copied." << std::endl;
+        std::cout << "Tool by " << AUTHOR << std::endl;
+        std::cout << std::endl;
+        std::cout << "Usage : CopyPreWotLKWater <target> <source>" << std::endl;
+        pauseAndExit();
 	} 
 	
-	std::fstream adtFile(argv[1], std::ios::in | std::ios::out | std::ios::binary);
-	std::fstream adtFile2(argv[2], std::ios::in | std::ios::binary);
+	std::fstream adtFileTarget(argv[1], std::ios::in | std::ios::out | std::ios::binary);
+	std::fstream adtFileSource(argv[2], std::ios::in | std::ios::binary);
 	
-	if (adtFile.is_open() && adtFile2.is_open())
-	{
-		adt ADT_TARGET(adtFile, new DebugLog());
-		adt ADT_FROM(adtFile2, new DebugLog());
-		
-		for (int i = 0; i < 256; i++)
-		{
-			ADT_TARGET.mcnk->entries[i].mclq = ADT_FROM.mcnk->entries[i].mclq;
-		}
+    if(!adtFileTarget.is_open())
+    {
+        if(adtFileSource.is_open())
+            adtFileSource.close();
 
-		ADT_TARGET.writeToDisk(adtFile);
-		adtFile.close();
-		adtFile2.close();
-	} else {
-		std::cerr << "Erreur fichier." << std::endl;
-		std::cerr << "to : " << argv[1] << std::endl;
-		std::cerr << "from : " << argv[2] << std::endl;
-	}
+        std::cerr << "Could not open target file : " << argv[1] << std::endl;
+        exit(0);
+    }
+
+    if(!adtFileSource.is_open())
+    { 
+        if(adtFileTarget.is_open())
+            adtFileTarget.close();
+
+        std::cerr << "Could not open source file : " << argv[2] << std::endl;
+        pauseAndExit();
+    }
+
+	adt AdtTarget(adtFileTarget);
+	adt AdtFrom(adtFileSource);
+		
+	for (int i = 0; i < MCNK::ENTRY_COUNT; i++)
+		AdtTarget.mcnk->entries[i].mclq = AdtFrom.mcnk->entries[i].mclq;
+
+	AdtTarget.writeToDisk(adtFileTarget);
+	adtFileTarget.close();
+	adtFileSource.close();
+
+    pauseAndExit();
 }

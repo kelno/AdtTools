@@ -1,7 +1,7 @@
 #include "CharArrayChunk.h"
+#include "logger.h"
 
-CharArrayChunk::CharArrayChunk(char* name, std::fstream& adtFile, unsigned int startByte, DebugLog* debuglog) :
-	debug_log(debuglog)
+CharArrayChunk::CharArrayChunk(char* name, std::fstream& adtFile, unsigned int startByte)
   {  
 	adtFile.seekg(startByte);
 	chunkHeader CHeader(adtFile);
@@ -12,7 +12,7 @@ CharArrayChunk::CharArrayChunk(char* name, std::fstream& adtFile, unsigned int s
 	chunkName = name;
 
 	if(size == 0)
-		debug_log->log("Warning - charArrayChunk(%s) : size = 0", chunkName);
+        sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Warning - charArrayChunk(%s) : size = 0", chunkName);
   };
 
 std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me){

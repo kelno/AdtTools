@@ -3,7 +3,7 @@
 MCNK::MCNK(std::fstream& adtFile, MCIN* mcin_) {
 	mcin = mcin_;
 	//totalSize = mcin->getMCNKSize();
-	for (int i = 0; i < (16*16); i++) 
+	for (int i = 0; i < ENTRY_COUNT; i++) 
 	{
 		//std::cout << i;
 		unsigned int MCNKChunk_Start = (unsigned int)adtFile.tellg();
@@ -36,7 +36,7 @@ MCNK::MCNK(std::fstream& adtFile, MCIN* mcin_) {
 }
 
 std::ostream& operator<< (std::ostream &stream, MCNK& me) {
-	for (int i = 0; i < (16*16); i++)
+	for (int i = 0; i < MCNK::ENTRY_COUNT; i++)
 	//int i = 1;
 	{
 		me.mcin->entries[i].mcnkOffs = (unsigned int)stream.tellp();

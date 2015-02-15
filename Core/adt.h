@@ -4,9 +4,10 @@ TODO : Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers scr
 #ifndef ADT_H
 #define ADT_H
 
+#define AUTHOR "Kelno <dr.kelno@gmail.com>"
+
 #include <fstream>
 #include <iostream>
-#include "debuglog.h"
 
 #include "chunkHeader.h"
 #include "MVER.h"
@@ -43,12 +44,13 @@ public:
 
 	//void* fileChunks[14]; //on connait le type grace à la position
 
-	adt(std::fstream& adtFile, DebugLog* debuglog = NULL);
+	adt(std::fstream& adtFile);
+    ~adt();
 
 	void writeToDisk(std::fstream& adtFile); 
-	void debug(const char*);
-private:
-	DebugLog* debug_log;
+
+    //MCLQ is the only water supported by <= BC clients (this is also retro-supported in later clients)
+    void allWaterMCLQ(float height);
 };
 
 #endif

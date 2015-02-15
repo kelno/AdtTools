@@ -5,13 +5,11 @@
 #include <random>
 
 struct MCLQInfo {
-	//unsigned short dunno1; //most time at 0 
-	//unsigned short dunno2; //most time at 0
 	float dunno;//most time at 0. Something about inclinaison? Another target height?
 	float height;
 };
 
-//this one may be completely wrong, complete guess. Seems wrong but okay for allwater
+//this one may be completely wrong, complete guess by myself (kelno). Seems wrong but okay for allwater
 struct MCLQEntry {
 	MCLQInfo info[1+9*9]; //cannot find the effect of the first
 	char flags1[8*8]; //not render = 0x0F. Commonly 0x04 
@@ -27,8 +25,9 @@ public:
 	unsigned int size;
 	unsigned int sizeLiquid; //total size, cheader included
 
-	MCLQ(std::fstream& adtFile, unsigned int startByte, unsigned int sLiquid){
-		sizeLiquid = sLiquid;
+	MCLQ(std::fstream& adtFile, unsigned int startByte, unsigned int liquidSize)
+    {
+		sizeLiquid = liquidSize;
 
 		adtFile.seekg(startByte);
 		chunkHeader CHeader(adtFile);
@@ -37,7 +36,9 @@ public:
 		//adtFile.read(fill, size + sizeLiquid - sizeof(chunkHeader));
 		adtFile.read(reinterpret_cast<char *>(&entry), size + sizeLiquid - sizeof(chunkHeader));
 	}
-	MCLQ(float height, float dunno, char flags1, char flags2) {
+
+	MCLQ(float height, float dunno, char flags1 = (char)0x04, char flags2 = (char)0xFF)
+    {
 		sizeLiquid = sizeof(MCLQEntry) + sizeof(chunkHeader);
 		for (int i = 0; i < 9*9+1; i++) {
 			entry.info[i].dunno = dunno;
@@ -50,7 +51,9 @@ public:
 		}
 		entry.unused = 0;
 	}
-	friend std::ostream& operator<< (std::ostream &stream, MCLQ& me) {
+
+	friend std::ostream& operator<< (std::ostream &stream, MCLQ& me) 
+    {
 		chunkHeader CHeader("MCLQ", me.size);
 		stream << CHeader;
 
@@ -58,11 +61,6 @@ public:
 		stream.write(reinterpret_cast<char *>(&me.entry), me.sizeLiquid - sizeof(chunkHeader));
 
 		return stream;
-	}
-	//dont forget to set MCNK_FLAG_LQ_RIVER
-	static MCLQ* AllWater(float height, float dunno = 0.0, char flags1 = 0x04, char flags2 = 0x00) {
-		MCLQ* waterChunk = new MCLQ(height, dunno, flags1, flags2);
-		return waterChunk;
 	}
 };
 

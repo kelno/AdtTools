@@ -3,13 +3,12 @@
 #define MTEX_H
 
 #include "CharArrayChunk.h"
-#include "debuglog.h"
 
 class MTEX : public CharArrayChunk {
 public:
 	//CharArrayChunk* data;
-	MTEX(std::fstream& adtFile, unsigned int startByte, DebugLog* debug_log) :
-	  CharArrayChunk("MTEX", adtFile, startByte, debug_log)
+	MTEX(std::fstream& adtFile, unsigned int startByte) :
+	  CharArrayChunk("MTEX", adtFile, startByte)
 	  {}
 };
 

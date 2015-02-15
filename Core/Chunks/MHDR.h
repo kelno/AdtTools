@@ -24,13 +24,12 @@ public:
 	 /*03Ch*/  unsigned int unused4;
 	 /*040h*/
 
+     //can throw
 	 MHDR(std::fstream& adtFile, unsigned int startByte) { 
 		adtFile.seekg(startByte);
 		chunkHeader MHDR_CHeader(adtFile);
 		if (std::strncmp(MHDR_CHeader.title,"RDHM",4) != 0)
-		{
-			throw("MHDR constructor : Invalid Header\n");
-		}
+			throw("Invalid Header");
 
 		adtFile.read(reinterpret_cast<char *>(&flags), sizeof(MHDR));
 	 }

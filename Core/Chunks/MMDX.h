@@ -7,8 +7,8 @@
 class MMDX : public CharArrayChunk {
 public:
 	CharArrayChunk* data;
-	MMDX(std::fstream& adtFile, unsigned int startByte, DebugLog* debug_log) :  
-		CharArrayChunk("MMDX", adtFile, startByte, debug_log)
+	MMDX(std::fstream& adtFile, unsigned int startByte) :  
+		CharArrayChunk("MMDX", adtFile, startByte)
 	{}
 };
 

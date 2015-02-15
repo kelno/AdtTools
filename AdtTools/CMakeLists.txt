@@ -32,8 +32,31 @@ set(AdtTools_SRCS
 
 add_executable(AdtTools ${sources_AdtTools})
 
-#install(FILES D:/a.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) 
-#install(FILES ${QT_ROOT_DIR}/bin/QtCore5.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) 
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
+#release dll's
+install(FILES ${QT_ROOT_DIR}/bin/Qt5Core.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Release) 
+install(FILES ${QT_ROOT_DIR}/bin/Qt5Widgets.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Release) 
+install(FILES ${QT_ROOT_DIR}/bin/libEGL.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Release) 
+install(FILES ${QT_ROOT_DIR}/bin/libGLESv2.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Release)
+install(FILES ${QT_ROOT_DIR}/plugins/platforms/qwindows.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH}/platforms/ CONFIGURATIONS Release) 
+	#this one is only needed to start the program in visual studio
+	install(FILES ${QT_ROOT_DIR}/plugins/platforms/qwindows.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH}/Release/platforms/ CONFIGURATIONS Release) 
+
+#debug dll's
+install(FILES ${QT_ROOT_DIR}/bin/Qt5Cored.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Debug) 
+install(FILES ${QT_ROOT_DIR}/bin/Qt5Widgetsd.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Debug) 
+install(FILES ${QT_ROOT_DIR}/bin/libEGLd.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Debug) 
+install(FILES ${QT_ROOT_DIR}/bin/libGLESv2d.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH} CONFIGURATIONS Debug) 
+install(FILES ${QT_ROOT_DIR}/plugins/platforms/qwindowsd.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH}/platforms/ CONFIGURATIONS Debug) 
+	#this one is only needed to start the program in visual studio
+	install(FILES ${QT_ROOT_DIR}/plugins/platforms/qwindowsd.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH}/Debug/platforms/ CONFIGURATIONS Debug) 
+
+#both config dll's
+install(FILES ${QT_ROOT_DIR}/bin/Qt5Guid.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+install(FILES ${QT_ROOT_DIR}/bin/icuin53.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+install(FILES ${QT_ROOT_DIR}/bin/icuuc53.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+install(FILES ${QT_ROOT_DIR}/bin/icudt53.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
 add_dependencies(AdtTools Core)
 
