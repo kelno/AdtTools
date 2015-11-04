@@ -6,7 +6,8 @@
 
 #define MVER_SIZE sizeof(int)
 
-class MVER {
+class MVER 
+{
 public:
 	unsigned int version;
 

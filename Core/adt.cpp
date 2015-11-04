@@ -6,13 +6,29 @@ using namespace std;
 
 adt::adt(fstream& adtFile)
 {
+    //copy the file in buffedAdtFile
+    {
+        //reserve size
+        adtFile.seekg(0, std::ios::end);
+        std::streamsize size = adtFile.tellg();
+        buffedAdtFile = std::vector<char>(size);
+
+        //read
+        adtFile.seekg(0, std::ios::beg);
+        if(!adtFile.read(buffedAdtFile.data(), size))
+        {
+            sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Could not get adt file in memory, aborting.");
+            exit(1);
+        }
+    }
     sLogger->OutMessage(Logger::LOG_LEVEL_NORMAL, "Extracting adt data");
+    //reset read position at file start
 	adtFile.seekg(0, std::ios_base::beg); 
 	try {
 		sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mver...");
 		mver = new MVER(adtFile);
 	} catch (char* e) {
-        sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Exception when construction MVER : %s", e);
+        sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Exception when constructing MVER : %s", e);
 		sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Is this an adt file? Aborting...");
 		exit(1);
 	}
@@ -21,15 +37,17 @@ adt::adt(fstream& adtFile)
 		mhdr = new MHDR(adtFile, MHDR_OFFSET - sizeof(chunkHeader));
 	} catch (char* e) {
         sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Exception when constructing MHDR : %s", e);
-		sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Cannot continue, aborting... %xh",  (int)adtFile.tellg());
-
+        sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Read position %xh", (int)adtFile.tellg());
+		sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Cannot continue, aborting...");
 		exit(1);
 	}
+
 	//lesquels peuvent etre vides? Check des chunks perdus dans le vide
 	if (mhdr->offsMCIN) {
 		try {
 			sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mcin...");
-			if (mhdr->offsMCIN) mcin = new MCIN(adtFile, MHDR_OFFSET + mhdr->offsMCIN);
+			if (mhdr->offsMCIN) 
+                mcin = new MCIN(adtFile, MHDR_OFFSET + mhdr->offsMCIN);
 		} catch (char* e) {
             sLogger->OutMessage(Logger::LOG_LEVEL_ERROR, "Exception when constructing MCIN : %s", e);
 		}
@@ -46,27 +64,27 @@ adt::adt(fstream& adtFile)
 		mtex = nullptr;
 
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mmdx...");
-	if (mhdr->offsMMDX) mmdx = new MMDX(adtFile, MHDR_OFFSET + mhdr->offsMMDX); else mmdx = nullptr;
+	if (mhdr->offsMMDX) mmdx = new MMDX(adtFile, MHDR_OFFSET + mhdr->offsMMDX);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mmid...");
-	if (mhdr->offsMMID) mmid = new MMID(adtFile, MHDR_OFFSET + mhdr->offsMMID);	else mmid = nullptr;
+	if (mhdr->offsMMID) mmid = new MMID(adtFile, MHDR_OFFSET + mhdr->offsMMID);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mwmo...");
-	if (mhdr->offsMWMO) mwmo = new MWMO(adtFile, MHDR_OFFSET + mhdr->offsMWMO); else mwmo = nullptr;
+	if (mhdr->offsMWMO) mwmo = new MWMO(adtFile, MHDR_OFFSET + mhdr->offsMWMO);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mwid...");
-	if (mhdr->offsMWID) mwid = new MWID(adtFile, MHDR_OFFSET + mhdr->offsMWID); else mwid = nullptr;
+	if (mhdr->offsMWID) mwid = new MWID(adtFile, MHDR_OFFSET + mhdr->offsMWID);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mddf...");
-	if (mhdr->offsMDDF) mddf = new MDDF(adtFile, MHDR_OFFSET + mhdr->offsMDDF); else mddf = nullptr;
+	if (mhdr->offsMDDF) mddf = new MDDF(adtFile, MHDR_OFFSET + mhdr->offsMDDF);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting modf...");
-	if (mhdr->offsMODF) modf = new MODF(adtFile, MHDR_OFFSET + mhdr->offsMODF); else modf = nullptr;
+	if (mhdr->offsMODF) modf = new MODF(adtFile, MHDR_OFFSET + mhdr->offsMODF);
 
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mcnk...");
 	mcnk = new MCNK(adtFile, mcin);
 
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mfbo...");
-	if (mhdr->offsMFBO)	mfbo = new MFBO(adtFile, MHDR_OFFSET + mhdr->offsMFBO); else mfbo = nullptr;
+	if (mhdr->offsMFBO)	mfbo = new MFBO(adtFile, MHDR_OFFSET + mhdr->offsMFBO);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mh2o...");
-	if (mhdr->offsMH2O)	mh2o = new MH2O(adtFile, MHDR_OFFSET + mhdr->offsMH2O); else mh2o = nullptr;
+	if (mhdr->offsMH2O)	mh2o = new MH2O(adtFile, MHDR_OFFSET + mhdr->offsMH2O);
 	sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Extracting mtxf...");
-	if (mhdr->offsMTXF)	mtxf = new MTXF(adtFile, MHDR_OFFSET + mhdr->offsMTXF); else mtxf = nullptr;
+	if (mhdr->offsMTXF)	mtxf = new MTXF(adtFile, MHDR_OFFSET + mhdr->offsMTXF);
 	sLogger->OutMessage(Logger::LOG_LEVEL_NORMAL, "Extracting done");
 
 	//TODO ValidityCheck
@@ -77,7 +95,7 @@ adt::~adt()
     //todo, free memory
 }
 
-void adt::writeToDisk(fstream& adtFile)
+void adt::WriteToDisk(fstream& adtFile)
 {
 	sLogger->OutMessage(Logger::LOG_LEVEL_NORMAL, "Writing adt data");
 	adtFile.seekp(0, std::ios_base::beg); 
@@ -156,7 +174,7 @@ void adt::writeToDisk(fstream& adtFile)
     sLogger->OutMessage(Logger::LOG_LEVEL_NORMAL, "Done writing adt data");
 }
 
-void adt::allWaterMCLQ(float height)
+void adt::AllWaterMCLQ(float height)
 {
     for (int i = 0; i < MCNK::ENTRY_COUNT; i++) {
 		mcnk->entries[i].mclq = new MCLQ(height, 0.0f, 0x04, 0x00);

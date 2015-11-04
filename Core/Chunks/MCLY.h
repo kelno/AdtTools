@@ -28,7 +28,7 @@ public:
 		}
 	}
 	friend std::ostream& operator<< (std::ostream &stream, MCLY& me) {
-		chunkHeader CHeader("MCLY",me.Layers.size() * sizeof(Layer));
+		chunkHeader CHeader("MCLY", unsigned int(me.Layers.size()) * sizeof(Layer));
 		stream << CHeader;
 
 		stream.write(reinterpret_cast<char *>(&me.Layers[0]), sizeof(Layer) * me.Layers.size());		

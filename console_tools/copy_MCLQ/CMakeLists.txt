@@ -1,4 +1,3 @@
-#add all subproject sources to solution
 file(GLOB sources_CopyMCLQ *.cpp *.h)
 
 set(CopyMCLQ_SRCS
@@ -8,8 +7,9 @@ set(CopyMCLQ_SRCS
 add_executable(CopyMCLQ ${sources_CopyMCLQ})
 set_target_properties(CopyMCLQ PROPERTIES OUTPUT_NAME "CopyPreWotLKWater")
 
-add_dependencies(CopyMCLQ Core)
+add_dependencies(CopyMCLQ ConsoleToolTemplate)
 
 target_link_libraries( CopyMCLQ
     Core
+	ConsoleToolTemplate
 )

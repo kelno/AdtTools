@@ -1,11 +1,14 @@
 #include "MFBO.h"
 
-MFBO::MFBO() {};
+MFBO::MFBO() 
+{}
+
 MFBO::MFBO(std::fstream& adtFile, unsigned int startByte) {  
 	adtFile.seekg(startByte);
 	adtFile.seekg(sizeof(chunkHeader), std::ios_base::cur);
 	adtFile.read(reinterpret_cast<char *>(&maximum), sizeof(MFBO));
 }
+
 void MFBO::set(short min, short max)
 {
 	for(int i = 0; i < 3; i++)
@@ -15,6 +18,7 @@ void MFBO::set(short min, short max)
 		for(int j = 0; j < 3; j++)
 			minimum.height[i][j] = min;
 };
+
 const short MFBO::getMin()
 {
 	return minimum.height[0][0];

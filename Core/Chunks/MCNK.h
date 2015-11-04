@@ -66,15 +66,15 @@ public:
 	MCIN* mcin;
     struct MCNKEntry {
 		MCNKHeader header;
-		MCVT* mcvt; 
-		MCNR* mcnr;
-		MCLY* mcly;
-		MCRF* mcrf;
-		MCSH* mcsh;
-		MCAL* mcal;
-		MCSE* mcse;
-		MCLQ* mclq;
-		MCCV* mccv;
+		MCVT* mcvt = nullptr;
+		MCNR* mcnr = nullptr;
+		MCLY* mcly = nullptr;
+		MCRF* mcrf = nullptr;
+		MCSH* mcsh = nullptr;
+		MCAL* mcal = nullptr;
+		MCSE* mcse = nullptr;
+		MCLQ* mclq = nullptr;
+		MCCV* mccv = nullptr;
 	} entries[ENTRY_COUNT];
 
 	MCNK(std::fstream& adtFile, MCIN* mcin);

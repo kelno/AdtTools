@@ -2,7 +2,7 @@
 
 MCNK::MCNK(std::fstream& adtFile, MCIN* mcin_) {
 	mcin = mcin_;
-	//totalSize = mcin->getMCNKSize();
+
 	for (int i = 0; i < ENTRY_COUNT; i++) 
 	{
 		//std::cout << i;
@@ -11,21 +11,22 @@ MCNK::MCNK(std::fstream& adtFile, MCIN* mcin_) {
 		chunkHeader CHeader(adtFile);
 		mcin->entries[i].size = CHeader.chunkSize;
 		adtFile.read(reinterpret_cast<char *>(&(entries[i].header.flags)), sizeof(MCNKHeader));
-		if (entries[i].header.ofsMCVT) entries[i].mcvt = new MCVT(adtFile, MCNKChunk_Start + entries[i].header.ofsMCVT); else entries[i].mcvt = nullptr;
-		if (entries[i].header.ofsMCNR) entries[i].mcnr = new MCNR(adtFile, MCNKChunk_Start + entries[i].header.ofsMCNR); else entries[i].mcnr = nullptr;
-		if (entries[i].header.ofsMCLY) entries[i].mcly = new MCLY(adtFile, MCNKChunk_Start + entries[i].header.ofsMCLY); else entries[i].mcly = nullptr;
+		if (entries[i].header.ofsMCVT) entries[i].mcvt = new MCVT(adtFile, MCNKChunk_Start + entries[i].header.ofsMCVT);
+		if (entries[i].header.ofsMCNR) entries[i].mcnr = new MCNR(adtFile, MCNKChunk_Start + entries[i].header.ofsMCNR);
+		if (entries[i].header.ofsMCLY) entries[i].mcly = new MCLY(adtFile, MCNKChunk_Start + entries[i].header.ofsMCLY);
 		//std::cout << std::hex << MCNKChunk_Start << std::endl;
 		//std::cout << std::hex << entries[i].header.ofsMCRF << std::endl;
 		//std::cout << std::hex << MCNKChunk_Start + entries[i].header.ofsMCRF << std::endl;
-		if (entries[i].header.ofsMCRF) entries[i].mcrf = new MCRF(adtFile, MCNKChunk_Start + entries[i].header.ofsMCRF); else entries[i].mcrf = nullptr;
+		if (entries[i].header.ofsMCRF) entries[i].mcrf = new MCRF(adtFile, MCNKChunk_Start + entries[i].header.ofsMCRF);
 		//if (i == 57) std::cout << "reading mcrf. Size = " << std::hex << entries[i].mcrf->size << std::endl;
-		if (entries[i].header.ofsMCSH) entries[i].mcsh = new MCSH(adtFile, MCNKChunk_Start + entries[i].header.ofsMCSH); else entries[i].mcsh = nullptr;
-		if (entries[i].header.ofsMCAL) entries[i].mcal = new MCAL(adtFile, MCNKChunk_Start + entries[i].header.ofsMCAL); else entries[i].mcal = nullptr;
-		if (entries[i].header.ofsMCLQ) entries[i].mclq = new MCLQ(adtFile, MCNKChunk_Start + entries[i].header.ofsMCLQ, entries[i].header.sizeLiquid); else entries[i].mclq = nullptr;
+		if (entries[i].header.ofsMCSH) entries[i].mcsh = new MCSH(adtFile, MCNKChunk_Start + entries[i].header.ofsMCSH);
+		if (entries[i].header.ofsMCAL) entries[i].mcal = new MCAL(adtFile, MCNKChunk_Start + entries[i].header.ofsMCAL);
+		if (entries[i].header.ofsMCLQ) entries[i].mclq = new MCLQ(adtFile, MCNKChunk_Start + entries[i].header.ofsMCLQ, entries[i].header.sizeLiquid);
 		//if (entries[i].header.sizeLiquid > 8) std::cout << i << " " << entries[i].header.sizeLiquid << std::endl; 
-		if (entries[i].header.ofsMCSE) entries[i].mcse = new MCSE(adtFile, MCNKChunk_Start + entries[i].header.ofsMCSE); else entries[i].mcse = nullptr;
-		if (entries[i].header.ofsMCCV) entries[i].mccv = new MCCV(adtFile, MCNKChunk_Start + entries[i].header.ofsMCCV); else entries[i].mccv = nullptr;
-		adtFile.seekg(MCNKChunk_Start + sizeof(chunkHeader) + mcin->entries[i].size); //ready for next
+		if (entries[i].header.ofsMCSE) entries[i].mcse = new MCSE(adtFile, MCNKChunk_Start + entries[i].header.ofsMCSE);
+		if (entries[i].header.ofsMCCV) entries[i].mccv = new MCCV(adtFile, MCNKChunk_Start + entries[i].header.ofsMCCV);
+
+		adtFile.seekg(MCNKChunk_Start + sizeof(chunkHeader) + mcin->entries[i].size); //get ready for next entry
 
 		/*entries[i].fill = new char[entries[i].size - sizeof(MCNKHeader)];
 			
@@ -42,7 +43,7 @@ std::ostream& operator<< (std::ostream &stream, MCNK& me) {
 		me.mcin->entries[i].mcnkOffs = (unsigned int)stream.tellp();
 		//std::cout << "start " << std::hex << me.mcin->entries[i].mcnkOffs << std::endl;
 
-		 //reserving, written at the end
+		//reserving, written at the end
 		stream.seekp(sizeof(chunkHeader), std::ios_base::cur); ////std::cout << "after cheader " << std::hex << stream.tellp() << std::endl;
 		stream.seekp(sizeof(MCNKHeader), std::ios_base::cur);
 

@@ -1,25 +1,23 @@
-project (AdtLib)
+project(AdtTools)
 cmake_minimum_required (VERSION 3.0)
 
-message("* AdtLib *")
+message("* AdtTools *")
 
-set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+# set default buildoptions and print them
+include(cmake/options.cmake)
 
-IF(UNIX)
-    add_definitions(-std=c++11)
-ENDIF ()
-IF (WIN32)
-    add_definitions(/MP)
-ENDIF ()
+include(cmake/settings.cmake)
 
 INCLUDE_DIRECTORIES(
-	${PROJECT_SOURCE_DIR}/Core
-	${PROJECT_SOURCE_DIR}/Core/Chunks
+	${PROJECT_SOURCE_DIR}/core
+	${PROJECT_SOURCE_DIR}/core/chunks
 )
 
-add_subdirectory(AdtTools)
-add_subdirectory(AllWater)
-add_subdirectory(Core)
-add_subdirectory(CopyMCLQ)
-add_subdirectory(FixInvertedMFBO)
+#add subdirectories according to selected cmake options
+add_subdirectory(core)
+if (CONSOLE_TOOLS)
+	add_subdirectory(console_tools)
+endif ()
+if (GUI)
+	add_subdirectory(gui)
+endif ()

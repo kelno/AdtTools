@@ -7,8 +7,9 @@ set(FixInvertedMFBO_SRCS
 add_executable(FixInvertedMFBO ${sources_FixInvertedMFBO})
 set_target_properties(FixInvertedMFBO PROPERTIES OUTPUT_NAME "FixCamera")
 
-add_dependencies(FixInvertedMFBO Core)
+add_dependencies(FixInvertedMFBO ConsoleToolTemplate)
 
 target_link_libraries( FixInvertedMFBO
+	ConsoleToolTemplate
     Core
 )

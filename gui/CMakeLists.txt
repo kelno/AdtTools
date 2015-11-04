@@ -22,15 +22,15 @@ find_package(Qt5Core REQUIRED)
 ## End Qt stuff ##
 
 #add all subproject sources to solution
-file(GLOB sources_AdtTools *.cpp *.h)
-file(GLOB sources_AdtTools_ui ui/*.cpp ui/*.h ui/*.ui)
+file(GLOB sources_GUI *.cpp *.h)
+file(GLOB sources_GUI_ui ui/*.cpp ui/*.h ui/*.ui)
 
-set(AdtTools_SRCS
-  ${sources_AdtTools}
-  ${sources_AdtTools_ui}
+set(GUI_SRCS
+  ${sources_GUI}
+  ${sources_GUI_ui}
 )
 
-add_executable(AdtTools ${sources_AdtTools})
+add_executable(GUI ${sources_GUI})
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
@@ -58,10 +58,10 @@ install(FILES ${QT_ROOT_DIR}/bin/icuin53.dll DESTINATION ${EXECUTABLE_OUTPUT_PAT
 install(FILES ${QT_ROOT_DIR}/bin/icuuc53.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 install(FILES ${QT_ROOT_DIR}/bin/icudt53.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
-add_dependencies(AdtTools Core)
+add_dependencies(GUI Core)
 
-target_link_libraries( AdtTools
+target_link_libraries( GUI
     Core
 )
 
-qt5_use_modules(AdtTools Widgets Core)
+qt5_use_modules(GUI Widgets Core)
