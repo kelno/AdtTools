@@ -19,7 +19,7 @@ public:
         LOG_LEVEL_DEBUG    = 2
     };
 
-    //initialise the Logger with given log level. A message with a higher log level than the logger log level will not be printed.
+    //initialise the Logger with given log level. A message with a higher log level than the logger log level will not be printed to console.
     Logger(LogLevel level = LOG_LEVEL_NORMAL);
     ~Logger();
 
@@ -37,7 +37,7 @@ public:
 
     /* Print a message with a given log level. A message with a higher log level than the logger log level will not be printed.
     This is a thread safe function (it may be called at any time by any thread without conflicts) */
-    void OutMessage(LogLevel level, const char* msg, ...);
+    void Out(LogLevel level, const char* msg, ...);
 
 private:
     void Run();

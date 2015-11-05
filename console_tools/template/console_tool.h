@@ -4,17 +4,22 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <assert.h>
+
+class adt;
 
 /* Description of an argument to be given to a tool
 */
 struct ToolArgument
 {
-    ToolArgument(std::string const& name, bool required = true) :
+    ToolArgument(std::string const& name, std::string const& description = "", bool required = true) :
         name(name),
+        description(description),
         required(required)
     { };
 
-    std::string name = "";
+    std::string name;
+    std::string description;
     bool required = false;
 };
 
@@ -52,12 +57,17 @@ protected:
     */
     ConsoleTool(std::string const& commandName, std::string const& version, std::string const& shortDescription, std::string const& fullDescription, std::vector<ToolArgument> const& arguments);
 
+    //helpers, use if you want
+    /* try opening fileName into adt, return the file stream on success, else print an error and return an empty pointer. */
+    std::fstream* OpenAdtFile(std::string fileName, adt* adt);
+
 private:
     std::string commandName;
     std::string version;
 	std::string shortDescription;
     std::string fullDescription;
     std::vector<ToolArgument> arguments;
+
 };
 
 #endif

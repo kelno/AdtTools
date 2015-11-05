@@ -9,3 +9,7 @@ if (WIN32 AND MSVC)
 	#enable multi processor compiling
     add_definitions(/MP)
 endif ()
+
+if(DEBUG_MODE)
+	add_definitions(-DEBUG_MODE)
+endif()

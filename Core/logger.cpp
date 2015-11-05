@@ -9,7 +9,7 @@ Logger::Logger(LogLevel level) :
 {
     //init logger
     sLogger->Start();
-#ifdef _DEBUG
+#ifdef DEBUG_MODE
     sLogger->SetLogLevel(Logger::LOG_LEVEL_DEBUG);
 #endif
 }
@@ -26,7 +26,7 @@ void Logger::SetLogLevel(LogLevel level) {
     logLevel = level;
 }
 
-void Logger::OutMessage(LogLevel level, const char* msg, ...) {
+void Logger::Out(LogLevel level, const char* msg, ...) {
     va_list ap;
     va_start(ap, msg);
     char text[1024] = {};

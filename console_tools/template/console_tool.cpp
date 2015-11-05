@@ -1,4 +1,6 @@
-#include "console_tool_template.h"
+#include "console_tool.h"
+#include "adt.h"
+#include "logger.h"
 
 std::string const& ConsoleTool::GetCommandName() const
 {
@@ -47,4 +49,18 @@ unsigned int ConsoleTool::GetMinArgumentCount() const
 unsigned int ConsoleTool::GetMaxArgumentCount() const
 {
     return unsigned int(arguments.size());
+}
+
+std::fstream* ConsoleTool::OpenAdtFile(std::string fileName, adt* ADT)
+{
+    std::fstream* file = new std::fstream(fileName, std::ios::in | std::ios::out | std::ios::binary);
+    if (!file->is_open())
+    {
+        sLogger->Out(Logger::LogLevel::LOG_LEVEL_ERROR, "Could not open file: %s", fileName);
+        return nullptr;
+    }
+
+    ADT = new adt(*file);
+
+    return file;
 }

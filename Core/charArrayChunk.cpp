@@ -12,7 +12,7 @@ CharArrayChunk::CharArrayChunk(char* name, std::fstream& adtFile, unsigned int s
 	chunkName = name;
 
 	if(size == 0)
-        sLogger->OutMessage(Logger::LOG_LEVEL_DEBUG, "Warning - charArrayChunk(%s) : size = 0", chunkName);
+        sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Warning - charArrayChunk(%s) : size = 0", chunkName);
   };
 
 std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me){

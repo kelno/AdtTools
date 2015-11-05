@@ -2,16 +2,24 @@
 #include <vector>
 #include <list>
 
-#include "template/console_tool_template.h"
-#include "all_water_MCLQ\AllWaterMCLQ.h"
+#include "template/console_tool.h"
+#include "all_water_MCLQ/all_water_MCLQ.h"
+#include "copy_MCLQ/copy_MCLQ.h"
+#include "fix_inverted_MFBO/fix_inverted_MFBO.h"
+
 #include "version.h"
+#include "logger.h"
+
+#define TOOLS_DESCRIPTION "Various tools to alter WoW map files, for Vanilla to Lich King expansions."
 
 std::list<ConsoleTool*> tools;
 
 /* Create all tools into tools list */
 void InitTools()
 {
-    tools.push_back((ConsoleTool*)new AllWaterMCLQ());
+    tools.push_back(static_cast<ConsoleTool*>(new AllWaterMCLQ()));
+    tools.push_back(static_cast<ConsoleTool*>(new CopyMCLQ()));
+    tools.push_back(static_cast<ConsoleTool*>(new FixInvertedMFBO()));
 };
 
 /* Delete all tools and empty tools list */
@@ -49,9 +57,15 @@ void PrintUsage(std::string const& executableName, std::string const& commandNam
     auto arguments = tool->GetArguments();
     std::cout << "Usage: " << commandName;
     for(auto arg : arguments)
-        std::cout << " <" << arg.name << ">"; 
+        if(arg.required)
+            std::cout << " <" << arg.name << ">"; 
+        else
+            std::cout << " [" << arg.name << "]";
 
     std::cout << std::endl;
+
+    for (auto arg : arguments)
+        std::cout << "  " << arg.name << ": " << arg.description << std::endl;
 }
 
 void ShowExtendedDescription(std::string const& executableName, std::string const& commandName, ConsoleTool const* tool)
@@ -59,7 +73,7 @@ void ShowExtendedDescription(std::string const& executableName, std::string cons
     std::cout << "Description: " << std::endl;
     std::cout << "  " << tool->GetFullDescription() << std::endl << std::endl;
     PrintUsage(executableName, commandName, tool);    
-    std::cout << std::endl << "Version: " << tool->GetVersion() << std::endl;
+    std::cout << std::endl << "Tool version: " << tool->GetVersion() << std::endl;
 }
 
 void main(int argc, char* argv[])
@@ -70,6 +84,7 @@ void main(int argc, char* argv[])
 	if(argc == 1)
 	{
         std::cout << "AdtTools v" << ADTTOOLS_VERSION << std::endl;
+        std::cout << TOOLS_DESCRIPTION << std::endl;
         ListCommands();
 
 		exit(0);
