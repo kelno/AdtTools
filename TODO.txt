@@ -4,15 +4,15 @@ README
 
 Auto generate QT files (cmake)
 
-TRANSLATION FILES
-
 uint32
 
 adt.h
 /* 
-TODO : Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers screwed
+TODO : Parsemer le tout d'exceptions ! Faut que ?a soit robuste aux fichiers screwed
 */
 
 DEBUG LEVEL dans le cmake
 
 use buffedAdtFile
+
+Create a parent class for all chunks

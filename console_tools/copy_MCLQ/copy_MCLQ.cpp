@@ -61,7 +61,7 @@ int CopyMCLQ::Work(int argc, char* argv[])
     for (unsigned int i = 0; i < MCNK::ENTRY_COUNT; i++)
         targetADT->mcnk->entries[i].mclq = sourceADT->mcnk->entries[i].mclq;
 
-    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Water copied from %s to %s", sourceADTFilename, targetADTFilename);
+    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Water copied from %s to %s", sourceADTFilename.c_str(), targetADTFilename.c_str());
 
     //Done, cleaning up
     targetADT->WriteToDisk(*targetFile);

@@ -22,7 +22,8 @@ adt::adt(fstream& adtFile)
         }
     }
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Extracting adt data");
-    //reset read position at file start
+
+    //reset read position at file start, to be sure
 	adtFile.seekg(0, std::ios_base::beg); 
 	try {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mver...");
@@ -32,7 +33,9 @@ adt::adt(fstream& adtFile)
 		sLogger->Out(Logger::LOG_LEVEL_ERROR, "Is this an adt file? Aborting...");
 		exit(1);
 	}
-	try {
+
+	try 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mhdr...");
 		mhdr = new MHDR(adtFile, MHDR_OFFSET - sizeof(chunkHeader));
 	} catch (char* e) {
@@ -42,8 +45,9 @@ adt::adt(fstream& adtFile)
 		exit(1);
 	}
 
-	//lesquels peuvent etre vides? Check des chunks perdus dans le vide
-	if (mhdr->offsMCIN) {
+	//which one can be empty ?
+	if (mhdr->offsMCIN) 
+    {
 		try {
 			sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mcin...");
 			if (mhdr->offsMCIN) 
@@ -52,7 +56,8 @@ adt::adt(fstream& adtFile)
             sLogger->Out(Logger::LOG_LEVEL_ERROR, "Exception when constructing MCIN : %s", e);
 		}
 	}
-	if (mhdr->offsMTEX) {
+	if (mhdr->offsMTEX) 
+    {
 		try {
 			sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mtex...");
 			mtex = new MTEX(adtFile, MHDR_OFFSET + mhdr->offsMTEX);
@@ -98,46 +103,61 @@ adt::~adt()
 void adt::WriteToDisk(fstream& adtFile)
 {
 	sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Writing adt data");
+    //set write position at file beginning
 	adtFile.seekp(0, std::ios_base::beg); 
 	adtFile << (*mver);
-	adtFile.seekp(sizeof(MHDR) + sizeof(chunkHeader), std::ios_base::cur); //reserving, mhdr written at the end
+    //reserving space for mhdr, it will be written later.
+	adtFile.seekp(sizeof(MHDR) + sizeof(chunkHeader), std::ios_base::cur);
 
 	mhdr->offsMCIN = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
-	adtFile.seekp(sizeof(MCIN) + sizeof(chunkHeader), std::ios_base::cur); //reserving, mcin written at the end
+    //reserving space for mcin, it will be written later
+	adtFile.seekp(sizeof(MCIN) + sizeof(chunkHeader), std::ios_base::cur); 
 	
-	if(mtex) {
+	if(mtex) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mtex...");
 		mhdr->offsMTEX = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
-		//std::cout << mtex->debug_log << endl;
 		adtFile << (*mtex);
-		//sLogger->Out(Logger::LOG_LEVEL_DEBUG, "ha");
 	} else { mhdr->offsMCIN = NULL; }
-	if(mmdx) {
+
+	if(mmdx) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mmdx...");
 		mhdr->offsMMDX = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mmdx);
 	} else { mhdr->offsMMDX = NULL; }
-	if(mmid) {
+
+	if(mmid) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mmid...");
 		mhdr->offsMMID = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mmid);
-	} else { mhdr->offsMMID = NULL; }
-	if(mwmo) {
+	} 
+    else { mhdr->offsMMID = NULL; }
+
+	if(mwmo) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mwmo...");
 		mhdr->offsMWMO = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mwmo);
 	} else { mhdr->offsMWMO = NULL; }
-	if(mwid) {
+
+	if(mwid) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mwmo...");
 		mhdr->offsMWID = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mwid);
 	} else { mhdr->offsMWID = NULL; }
-	if(mddf) {
+
+	if(mddf) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mddf...");
 		mhdr->offsMDDF = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mddf);
 	} else { mhdr->offsMDDF = NULL; }
-	if(modf) {
+
+	if(modf) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing modf...");
 		mhdr->offsMODF = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*modf);
@@ -146,7 +166,8 @@ void adt::WriteToDisk(fstream& adtFile)
 	sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mcnk...");
 	mcnk->mcin = mcin; //update link
 	adtFile << (*mcnk); 
-	if(mfbo) {
+	if(mfbo) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mfbo...");
 		mhdr->offsMFBO = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mfbo);
@@ -154,19 +175,23 @@ void adt::WriteToDisk(fstream& adtFile)
 
 	adtFile.seekp(32768, std::ios_base::cur);
 
-	if(mh2o) {
+	if(mh2o) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mh2o...");
 		mhdr->offsMH2O = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mh2o);
 	} else { mhdr->offsMH2O = NULL; }
-	if(mtxf) {
+
+	if(mtxf) 
+    {
 		sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mtxf...");
 		mhdr->offsMTXF = (unsigned int)adtFile.tellp() - MHDR_OFFSET;
 		adtFile << (*mtxf);
 	} else { mhdr->offsMTXF = NULL; }
 
+    //now write the data we skipped
 	sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mhdr...");
-	adtFile.seekp(MHDR_OFFSET - sizeof(chunkHeader)); //reserving, mhdr written at the end
+	adtFile.seekp(MHDR_OFFSET - sizeof(chunkHeader));
 	adtFile << (*mhdr);
 	sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mcin...");
 	adtFile << (*mcin);
@@ -177,7 +202,7 @@ void adt::WriteToDisk(fstream& adtFile)
 void adt::AllWaterMCLQ(float height)
 {
     for (int i = 0; i < MCNK::ENTRY_COUNT; i++) {
-		mcnk->entries[i].mclq = new MCLQ(height, 0.0f, 0x04, 0x00);
+		mcnk->entries[i].mclq = new MCLQ(height, 0.0f, MCLQ_FLAG1_UNK_3, MCLQ_FLAG2_NONE);
 		mcnk->entries[i].header.flags |= MCNK::FLAG_LQ_RIVER;
 	}
 }
