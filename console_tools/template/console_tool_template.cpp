@@ -1,13 +1,18 @@
 #include "console_tool_template.h"
 
+std::string const& ConsoleTool::GetCommandName() const
+{
+    return commandName;
+}
+
 std::string const& ConsoleTool::GetVersion() const
 {
     return version;
 }
 
-std::string const& ConsoleTool::GetQuickDescription() const
+std::string const& ConsoleTool::GetShortDescription() const
 {
-    return quickDescription;
+    return shortDescription;
 }
 
 std::string const& ConsoleTool::GetFullDescription() const
@@ -20,9 +25,10 @@ std::vector<ToolArgument> const& ConsoleTool::GetArguments() const
     return arguments;
 }
 
-ConsoleTool::ConsoleTool(std::string const& version, std::string const& quickDescription, std::string const& fullDescription, std::vector<ToolArgument> const& arguments) :
+ConsoleTool::ConsoleTool(std::string const& commandName, std::string const& version, std::string const& shortDescription, std::string const& fullDescription, std::vector<ToolArgument> const& arguments) :
+    commandName(commandName),
     version(version),
-    quickDescription(quickDescription),
+    shortDescription(shortDescription),
     fullDescription(fullDescription),
     arguments(arguments)
 {

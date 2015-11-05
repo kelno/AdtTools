@@ -1,7 +1,7 @@
-#include "console_tool_template.h"
 #include "AllWaterMCLQ.h"
-#include <sstream>
 #include "adt.h"
+
+#include <sstream>
 
 int AllWaterMCLQ::Work(int argc, char* argv[])
 {

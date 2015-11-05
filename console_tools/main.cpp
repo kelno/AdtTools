@@ -1,46 +1,49 @@
 #include <iostream>
 #include <vector>
+#include <list>
+
 #include "template/console_tool_template.h"
-
 #include "all_water_MCLQ\AllWaterMCLQ.h"
+#include "version.h"
 
-#define VERSION "0.2"
+std::list<ConsoleTool*> tools;
 
-struct ToolListElement
-{
-    ToolListElement(std::string name, ConsoleTool* tool) :
-        toolName(name),
-        tool(tool)
-    {};
-
-    std::string toolName = "";
-    ConsoleTool* tool = nullptr;
-};
-
-std::vector<ToolListElement> tools;
-
+/* Create all tools into tools list */
 void InitTools()
 {
-    tools.push_back(ToolListElement("allwater", (ConsoleTool*)new AllWaterMCLQ()));
+    tools.push_back((ConsoleTool*)new AllWaterMCLQ());
 };
+
+/* Delete all tools and empty tools list */
+void DeleteTools()
+{
+    while (!tools.empty())
+    {
+        ConsoleTool* tool = tools.back();
+        delete tool;
+        tool = nullptr;
+        tools.pop_back();
+    }
+}
 
 void ListCommands()
 {
     std::cout << "Commands list:" << std::endl;
     for(auto itr : tools)
-        std::cout << "  " << itr.toolName << " - " << itr.tool->GetQuickDescription() << std::endl;
+        std::cout << "  " << itr->GetCommandName() << " - " << itr->GetShortDescription() << std::endl;
 }
 
 ConsoleTool* GetToolWithName(std::string name)
 {
-    for(auto itr : tools)
-        if(itr.toolName == name)
-            return itr.tool;
+    for (auto itr : tools)
+        if (itr->GetCommandName() == name)
+            return itr;
 
     //no tool found
     return nullptr;
 }
 
+/* Print the arguments of a command */
 void PrintUsage(std::string const& executableName, std::string const& commandName, ConsoleTool const* tool)
 {
     auto arguments = tool->GetArguments();
@@ -61,22 +64,21 @@ void ShowExtendedDescription(std::string const& executableName, std::string cons
 
 void main(int argc, char* argv[])
 {
-    std::cout << "Press any key to continue...";
-    std::getchar();
-
     InitTools();
 
     //if no command given, list commands
 	if(argc == 1)
 	{
-        std::cout << "AdtTools v" << VERSION << std::endl;
+        std::cout << "AdtTools v" << ADTTOOLS_VERSION << std::endl;
         ListCommands();
+
 		exit(0);
 	} 
     
     //else if command given
     std::string executableName = argv[0];
     std::string commandName = argv[1];
+
     //check if command exists
     ConsoleTool* tool = GetToolWithName(commandName);
     if(!tool)
@@ -107,5 +109,9 @@ void main(int argc, char* argv[])
 
     //all okay let's get to work
     int error = tool->Work(argc, argv);
+
+    //erase all tools
+    DeleteTools();
+
     exit(error);
 }

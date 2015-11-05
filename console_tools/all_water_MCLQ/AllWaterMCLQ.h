@@ -8,9 +8,11 @@ class AllWaterMCLQ : ConsoleTool
 public:
     AllWaterMCLQ() :
     ConsoleTool(
+        //command name
+        "allwater",
         //version
         "0.1",
-        //quick description
+        //short description
         "WATER EVERYWHERE",
         //full description
         "Adds 'MCLQ' water that can be parsed by clients of all versions. You should still prefer using the usual AllWater for >= LK clients, which put 'MH20' water, and most tools only supports this one.",
@@ -25,4 +27,4 @@ public:
 	int Work(int argc, char* argv[]) override;
 };
 
-#endif
+#endif //H_ALL_WATER_MCLQ

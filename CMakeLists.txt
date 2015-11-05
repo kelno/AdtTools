@@ -8,6 +8,7 @@ include(cmake/options.cmake)
 
 include(cmake/settings.cmake)
 
+#global includes
 INCLUDE_DIRECTORIES(
 	${PROJECT_SOURCE_DIR}/core
 	${PROJECT_SOURCE_DIR}/core/chunks
@@ -18,6 +19,7 @@ add_subdirectory(core)
 if (CONSOLE_TOOLS)
 	add_subdirectory(console_tools)
 endif ()
+
 if (GUI)
 	add_subdirectory(gui)
 endif ()
