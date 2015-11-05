@@ -1,15 +1,15 @@
 #include <QtGui>
 #include <QWidget>
 #include <QFileDialog>
+#include <QObject>
 
-#include "ui_MainWindows.h"
+#include "ui/ui_MainWindows.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
     private slots:
-    	//void calcul() const;
 
 public:
     MainWindow(QWidget *parent = 0);

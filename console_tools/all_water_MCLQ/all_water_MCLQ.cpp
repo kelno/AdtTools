@@ -7,8 +7,8 @@
 int AllWaterMCLQ::Work(int argc, char* argv[])
 {
     //Init
-    std::string targetADTFilename = argv[1];
-    float height = (float)atof(argv[2]);
+    std::string targetADTFilename = argv[2];
+    float height = (float)atof(argv[3]);
 
     std::fstream* targetFile = nullptr;
     adt* targetADT = nullptr;

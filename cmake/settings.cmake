@@ -11,5 +11,5 @@ if (WIN32 AND MSVC)
 endif ()
 
 if(DEBUG_MODE)
-	add_definitions(-DEBUG_MODE)
+	add_definitions(-DDEBUG_MODE)
 endif()

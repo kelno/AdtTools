@@ -78,6 +78,11 @@ void ShowExtendedDescription(std::string const& executableName, std::string cons
 
 void main(int argc, char* argv[])
 {
+#ifdef DEBUG_MODE
+    std::cout << "Press any key to continue...";
+    std::getchar();
+#endif
+
     InitTools();
 
     //if no command given, list commands

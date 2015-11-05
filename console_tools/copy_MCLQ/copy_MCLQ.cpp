@@ -11,8 +11,8 @@ int CopyMCLQ::Work(int argc, char* argv[])
     std::fstream* targetFile = nullptr;
     adt* sourceADT = nullptr;
     adt* targetADT = nullptr;
-    std::string sourceADTFilename = argv[1];
-    std::string targetADTFilename = argv[2];
+    std::string sourceADTFilename = argv[2];
+    std::string targetADTFilename = argv[3];
 
     auto cleanAll = [&]()
     {

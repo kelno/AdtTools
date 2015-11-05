@@ -9,7 +9,7 @@ int FixInvertedMFBO::Work(int argc, char* argv[])
     //Init
     std::fstream* targetFile = nullptr;
     adt* targetADT = nullptr;
-    std::string targetADTFilename = argv[1];
+    std::string targetADTFilename = argv[2];
 
     auto cleanAll = [&]()
     {

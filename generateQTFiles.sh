@@ -1,9 +1,9 @@
 @echo off
 
-cd D:\docs\code\AdtLib\sources\AdtTools
+cd D:/docs/code/AdtTools/sources/gui
 ::echo %CD%
 moc MainWindow.h > moc.cpp
-uic ui/mainwindow.ui > ui_mainwindows.h
+uic ui/mainwindow.ui > ui/ui_mainwindows.h
 
 echo Done!
 pause

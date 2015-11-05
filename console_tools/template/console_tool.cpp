@@ -22,12 +22,12 @@ std::string const& ConsoleTool::GetFullDescription() const
     return fullDescription;
 }
 
-std::vector<ToolArgument> const& ConsoleTool::GetArguments() const
+std::list<ToolArgument> const& ConsoleTool::GetArguments() const
 {
     return arguments;
 }
 
-ConsoleTool::ConsoleTool(std::string const& commandName, std::string const& version, std::string const& shortDescription, std::string const& fullDescription, std::vector<ToolArgument> const& arguments) :
+ConsoleTool::ConsoleTool(std::string const& commandName, std::string const& version, std::string const& shortDescription, std::string const& fullDescription, std::list<ToolArgument> const& arguments) :
     commandName(commandName),
     version(version),
     shortDescription(shortDescription),
