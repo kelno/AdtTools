@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <sstream>
 
 #include "template/console_tool.h"
 #include "all_water_MCLQ/all_water_MCLQ.h"
@@ -36,9 +37,12 @@ void DeleteTools()
 
 void ListCommands()
 {
-    std::cout << "Commands list:" << std::endl;
+    std::stringstream list;
+    list << "Commands list:" << std::endl;
     for(auto itr : tools)
-        std::cout << "  " << itr->GetCommandName() << " - " << itr->GetShortDescription() << std::endl;
+        list << "  " << itr->GetCommandName() << " - " << itr->GetShortDescription() << std::endl;
+
+    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s", list.str().c_str());
 }
 
 ConsoleTool* GetToolWithName(std::string name)
@@ -55,44 +59,56 @@ ConsoleTool* GetToolWithName(std::string name)
 void PrintUsage(std::string const& executableName, std::string const& commandName, ConsoleTool const* tool)
 {
     auto arguments = tool->GetArguments();
-    std::cout << "Usage: " << commandName;
+
+    std::stringstream usage;
+    usage << "Usage: " << commandName;
     for(auto arg : arguments)
         if(arg.required)
-            std::cout << " <" << arg.name << ">"; 
+            usage << " <" << arg.name << ">";
         else
-            std::cout << " [" << arg.name << "]";
+            usage << " [" << arg.name << "]";
 
-    std::cout << std::endl;
+    usage << std::endl;
 
     for (auto arg : arguments)
-        std::cout << "  " << arg.name << ": " << arg.description << std::endl;
+        usage << "  " << arg.name << ": " << arg.description << std::endl;
+
+    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s", usage.str().c_str());
 }
 
 void ShowExtendedDescription(std::string const& executableName, std::string const& commandName, ConsoleTool const* tool)
 {
-    std::cout << "Description: " << std::endl;
-    std::cout << "  " << tool->GetFullDescription() << std::endl << std::endl;
+    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Description:");
+    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "  %s\n", tool->GetFullDescription().c_str());
     PrintUsage(executableName, commandName, tool);    
-    std::cout << std::endl << "Tool version: " << tool->GetVersion() << std::endl;
+    sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Tool version: %s", tool->GetVersion().c_str());
 }
 
 void main(int argc, char* argv[])
 {
 #ifdef DEBUG_MODE
-    std::cout << "Press any key to continue...";
+    std::cout << "Press any key to continue..." << std::endl;
     std::getchar();
 #endif
+
+    auto DoExit = [&](int code)
+    {
+        //erase all tools
+        DeleteTools();
+        sLogger->WaitUntilEmpty();
+        exit(code);
+    };
 
     InitTools();
 
     //if no command given, list commands
 	if(argc == 1)
 	{
-        std::cout << "AdtTools v" << ADTTOOLS_VERSION << std::endl;
-        std::cout << TOOLS_DESCRIPTION << std::endl;
+        sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "AdtTools v%s", ADTTOOLS_VERSION);
+        sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s", TOOLS_DESCRIPTION);
         ListCommands();
 
-		exit(0);
+        DoExit(0);
 	} 
     
     //else if command given
@@ -103,35 +119,32 @@ void main(int argc, char* argv[])
     ConsoleTool* tool = GetToolWithName(commandName);
     if(!tool)
     {
-        std::cout << "No command found with this name." << std::endl;
+        sLogger->Out(Logger::LogLevel::LOG_LEVEL_ERROR, "%s", "No command found with this name.");
         ListCommands();
-		exit(1);
+        DoExit(1);
     }
 
     if(argc == 2) //if only the command name was given, show extended description
     {
         ShowExtendedDescription(executableName, commandName, tool);
-        exit(0);
+        DoExit(0);
     } else { //if command argument(s) is/are given
         unsigned int argCount = argc - 2;
         if(argCount < tool->GetMinArgumentCount())
         {
-            std::cout << "Too few arguments." << std::endl;
+            sLogger->Out(Logger::LogLevel::LOG_LEVEL_ERROR, "%s", "Too few arguments.");
             PrintUsage(executableName, commandName, tool);
-            exit(0);
+            DoExit(0);
         } else if (argCount > tool->GetMaxArgumentCount())
         {
-            std::cout << "Too much arguments." << std::endl;
+            sLogger->Out(Logger::LogLevel::LOG_LEVEL_ERROR, "%s", "Too much arguments.");
             PrintUsage(executableName, commandName, tool);
-            exit(0);
+            DoExit(0);
         }
     }
 
     //all okay let's get to work
     int error = tool->Work(argc, argv);
 
-    //erase all tools
-    DeleteTools();
-
-    exit(error);
+    DoExit(error);
 }

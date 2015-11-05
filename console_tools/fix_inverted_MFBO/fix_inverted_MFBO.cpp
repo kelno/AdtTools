@@ -35,14 +35,21 @@ int FixInvertedMFBO::Work(int argc, char* argv[])
     }
 
     //Fix the bug if needed
-    if (targetADT->mfbo->hasInvertedMinMax())
+    if (targetADT->mfbo)
     {
-        std::cout << targetADTFilename << " has inverted coordinates, fixing it." << std::endl;
-        targetADT->mfbo->invertMinMax();
+        if (targetADT->mfbo->hasInvertedMinMax())
+        {
+            sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s has inverted coordinates, fixing it.", targetADTFilename);
+            targetADT->mfbo->invertMinMax();
 
-        targetADT->WriteToDisk(*targetFile);
-    } else {
-        std::cout << targetADTFilename << " seems already correct, nothing to do." << std::endl;
+            targetADT->WriteToDisk(*targetFile);
+        }
+        else {
+            sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s seems already correct, nothing to do.", targetADTFilename);
+        }
+    }
+    else {
+        sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s has no MFBO data, nothing to do.", targetADTFilename);
     }
 
     //Done, cleaning up

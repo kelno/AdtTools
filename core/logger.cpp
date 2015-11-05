@@ -8,25 +8,29 @@ Logger::Logger(LogLevel level) :
     logLevel(level)
 {
     //init logger
-    sLogger->Start();
+    Start();
 #ifdef DEBUG_MODE
-    sLogger->SetLogLevel(Logger::LOG_LEVEL_DEBUG);
+    SetLogLevel(Logger::LOG_LEVEL_DEBUG);
 #endif
 }
 
-Logger::~Logger() {
+Logger::~Logger() 
+{
 
 }
 
-Logger::LogLevel Logger::GetLogLevel() const {
+Logger::LogLevel Logger::GetLogLevel() const 
+{
     return logLevel;
 }
 
-void Logger::SetLogLevel(LogLevel level) {
+void Logger::SetLogLevel(LogLevel level) 
+{
     logLevel = level;
 }
 
-void Logger::Out(LogLevel level, const char* msg, ...) {
+void Logger::Out(LogLevel level, const char* msg, ...) 
+{
     va_list ap;
     va_start(ap, msg);
     char text[1024] = {};
@@ -37,7 +41,8 @@ void Logger::Out(LogLevel level, const char* msg, ...) {
     outputQueue.push(std::make_pair(level, text));
 }
 
-void Logger::Run() {
+void Logger::Run() 
+{
     std::pair<LogLevel, std::string> pair;
     while(!m_stop)
     {
@@ -56,4 +61,10 @@ void Logger::Run() {
         //some sleep to avoid much much unecessary loops
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
+}
+
+void Logger::WaitUntilEmpty()
+{
+    while (!outputQueue.empty())
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
 }

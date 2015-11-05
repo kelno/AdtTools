@@ -39,6 +39,9 @@ public:
     This is a thread safe function (it may be called at any time by any thread without conflicts) */
     void Out(LogLevel level, const char* msg, ...);
 
+    /* Keep caller waiting until logger output queue is empty */
+    void WaitUntilEmpty();
+
 private:
     void Run();
     std::queue<std::pair<LogLevel, std::string>> outputQueue; //level + message

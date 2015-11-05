@@ -51,7 +51,7 @@ unsigned int ConsoleTool::GetMaxArgumentCount() const
     return unsigned int(arguments.size());
 }
 
-std::fstream* ConsoleTool::OpenAdtFile(std::string fileName, adt* ADT)
+std::fstream* ConsoleTool::OpenAdtFile(std::string fileName, adt*& ADT)
 {
     std::fstream* file = new std::fstream(fileName, std::ios::in | std::ios::out | std::ios::binary);
     if (!file->is_open())

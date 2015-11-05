@@ -61,7 +61,7 @@ protected:
 
     //helpers, use if you want
     /* try opening fileName into adt, return the file stream on success, else print an error and return an empty pointer. */
-    std::fstream* OpenAdtFile(std::string fileName, adt* adt);
+    std::fstream* OpenAdtFile(std::string fileName, adt*& adt);
 
 private:
     std::string commandName;
