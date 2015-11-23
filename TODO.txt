@@ -11,8 +11,13 @@ adt.h
 TODO : Parsemer le tout d'exceptions ! Faut que ?a soit robuste aux fichiers screwed
 */
 
-DEBUG LEVEL dans le cmake
-
 use buffedAdtFile
 
 Create a parent class for all chunks
+
+Tools idea:
+- offset whole map
+- modify terrain/water from a texture file
+- Shadow tools ?
+- Doodads tools ?
+- copy whole chunk
