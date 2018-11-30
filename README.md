@@ -17,8 +17,8 @@ Some example tools are already done:
 - FixCamera  
   _Fix the annoying camera bug induced in Noggit where your character camera stay high in the sky._
 
-This project is still a WIP, most adt chunks are still only partially interpreted and are stored as bytes streams. This means the data in these non interpreted chunks is kept as is and the interpretation system must be extended to allow simple usage.
+This project is still a WIP, most adt chunks are still only partially interpreted and are stored as bytes streams. This data is manipulable as raw bytes, but the interpretation system must be extended for them to allow simple usage.
 
-There is also some work on a basic Qt interface for tools, you should ignore it for now. 
+(There is also some work on a basic Qt interface for tools, you should ignore it for now.)
 
-You can contact me at dr.kelno <at> gmail <dot> com if you're interested in using it, I may want to fix things for you.
+You can contact me at kelnowm <at> gmail <dot> com if you're interested in using it, I may want to fix things for you.
