@@ -24,7 +24,7 @@ public:
     )
     { }
 
-	int Work(int argc, char* argv[]) override;
+    int Work(int argc, char* argv[]) override;
 };
 
 #endif //H_ALL_WATER_MCLQ

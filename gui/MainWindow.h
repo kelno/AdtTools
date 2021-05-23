@@ -13,19 +13,19 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = 0);
-	~MainWindow() {};
+    ~MainWindow() {};
 
 private:
     Ui::MainWindow ui;
-	QDir InputFile;
-	QDir OutputFile;
-	void connectActions();
+    QDir InputFile;
+    QDir OutputFile;
+    void connectActions();
 
 
 private slots:
-	void changeInFile();
-	void changeOutFile();
-	void UpdateInputPath();
-	void UpdateOutputPath();
-	void DoStuff();
+    void changeInFile();
+    void changeOutFile();
+    void UpdateInputPath();
+    void UpdateOutputPath();
+    void DoStuff();
 };

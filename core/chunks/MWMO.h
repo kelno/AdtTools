@@ -7,10 +7,10 @@
 
 class MWMO : public CharArrayChunk {
 public:
-	CharArrayChunk* data;
-	MWMO(std::fstream& adtFile, unsigned int startByte) :
-		CharArrayChunk("MWMO", adtFile, startByte)
-	{}
+    CharArrayChunk* data;
+    MWMO(std::fstream& adtFile, unsigned int startByte) :
+        CharArrayChunk("MWMO", adtFile, startByte)
+    {}
 };
 
 #endif

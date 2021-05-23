@@ -6,10 +6,10 @@
 
 class MMDX : public CharArrayChunk {
 public:
-	CharArrayChunk* data;
-	MMDX(std::fstream& adtFile, unsigned int startByte) :  
-		CharArrayChunk("MMDX", adtFile, startByte)
-	{}
+    CharArrayChunk* data;
+    MMDX(std::fstream& adtFile, unsigned int startByte) :  
+        CharArrayChunk("MMDX", adtFile, startByte)
+    {}
 };
 
 #endif

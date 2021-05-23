@@ -6,10 +6,10 @@ if (UNIX)
 endif ()
 
 if (WIN32 AND MSVC)
-	#enable multi processor compiling
+    #enable multi processor compiling
     add_definitions(/MP)
 endif ()
 
 if(DEBUG_MODE)
-	add_definitions(-DDEBUG_MODE)
+    add_definitions(-DDEBUG_MODE)
 endif()

@@ -10,14 +10,14 @@ public:
 
   IntArrayChunk() {};
   IntArrayChunk(std::fstream& adtFile, unsigned int startByte) {  
-	adtFile.seekg(startByte);
-	chunkHeader CHeader(adtFile);
-	size = CHeader.chunkSize;
-	offsets = (unsigned int*)new char[size];
-	adtFile.read(reinterpret_cast<char *>(offsets), size);
+    adtFile.seekg(startByte);
+    chunkHeader CHeader(adtFile);
+    size = CHeader.chunkSize;
+    offsets = (unsigned int*)new char[size];
+    adtFile.read(reinterpret_cast<char *>(offsets), size);
   };
   /*unsigned int getSize() {
-	  return size;
+      return size;
   };*/
 };
 

@@ -66,7 +66,7 @@ protected:
 private:
     std::string commandName;
     std::string version;
-	std::string shortDescription;
+    std::string shortDescription;
     std::string fullDescription;
     std::list<ToolArgument> arguments;
 

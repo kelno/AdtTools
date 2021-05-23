@@ -27,7 +27,7 @@ public:
     )
     { }
 
-	int Work(int argc, char* argv[]) override;
+    int Work(int argc, char* argv[]) override;
 };
 
 #endif //H_FIX_INVERTED_MFBO

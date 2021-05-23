@@ -28,7 +28,7 @@ TODO : Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers scr
 class adt {
 public:
     MVER* mver = nullptr;   //version (always 12h?)
-	MHDR* mhdr = nullptr;   //header
+    MHDR* mhdr = nullptr;   //header
     MCIN* mcin = nullptr;   //Pointers to MCNK chunks and their sizes.
     MTEX* mtex = nullptr;   //List of textures used for texturing the terrain in this map tile.
     MMDX* mmdx = nullptr;   //List of filenames for M2 models that appear in this map tile.
@@ -39,15 +39,15 @@ public:
     MODF* modf = nullptr;   //Placement information for WMOs. Additional to this, the WMOs to render are referenced in each MCRF chunk. (?) 
     MH2O* mh2o = nullptr;   //Water chunk (LK)
     MCNK* mcnk = nullptr;   //Terrain
-	MFBO* mfbo = nullptr;   //A bounding box for flying.
+    MFBO* mfbo = nullptr;   //A bounding box for flying.
     MTXF* mtxf = nullptr;   //Array of integers wich indicate if the same position in the MTEX array has to be handled differentely.
 
-	//void* fileChunks[14]; //on connait le type grace à la position
+    //void* fileChunks[14]; //on connait le type grace à la position
 
-	adt(std::fstream& adtFile);
+    adt(std::fstream& adtFile);
     ~adt();
 
-	void WriteToDisk(std::fstream& adtFile); 
+    void WriteToDisk(std::fstream& adtFile); 
 
     //MCLQ is the only water supported by <= BC clients (this is also retro-supported by later clients)
     void AllWaterMCLQ(float height);

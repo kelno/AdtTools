@@ -102,14 +102,14 @@ void main(int argc, char* argv[])
     InitTools();
 
     //if no command given, list commands
-	if(argc == 1)
-	{
+    if(argc == 1)
+    {
         sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "AdtTools v%s", ADTTOOLS_VERSION);
         sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s", TOOLS_DESCRIPTION);
         ListCommands();
 
         DoExit(0);
-	} 
+    } 
     
     //else if command given
     std::string executableName = argv[0];

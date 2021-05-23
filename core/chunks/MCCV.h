@@ -5,24 +5,24 @@
 
 class MCCV {
 public:
-	char* fill;
-	unsigned int size;
+    char* fill;
+    unsigned int size;
 
-	MCCV(std::fstream& adtFile, unsigned int startByte){
-		adtFile.seekg(startByte);
-		chunkHeader CHeader(adtFile);
-		size = CHeader.chunkSize;
-		fill = new char[size];
-		adtFile.read(fill, size);
-	}
-	friend std::ostream& operator<< (std::ostream &stream, MCCV& me) {
-		chunkHeader CHeader("MCCV", me.size);
-		stream << CHeader;
+    MCCV(std::fstream& adtFile, unsigned int startByte){
+        adtFile.seekg(startByte);
+        chunkHeader CHeader(adtFile);
+        size = CHeader.chunkSize;
+        fill = new char[size];
+        adtFile.read(fill, size);
+    }
+    friend std::ostream& operator<< (std::ostream &stream, MCCV& me) {
+        chunkHeader CHeader("MCCV", me.size);
+        stream << CHeader;
 
-		stream.write(me.fill, me.size);		
+        stream.write(me.fill, me.size);        
 
-		return stream;
-	}
+        return stream;
+    }
 };
 
 #endif

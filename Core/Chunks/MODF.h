@@ -27,19 +27,19 @@ public:
   MODFEntry* entries;
 
   MODF(std::fstream& adtFile, unsigned int startByte) {  
-		adtFile.seekg(startByte);
-		chunkHeader MODFHeader(adtFile);
-		size = MODFHeader.chunkSize;
-		entries = (MODFEntry*)new char[size];
-		adtFile.read(reinterpret_cast<char *>(entries), size);
+        adtFile.seekg(startByte);
+        chunkHeader MODFHeader(adtFile);
+        size = MODFHeader.chunkSize;
+        entries = (MODFEntry*)new char[size];
+        adtFile.read(reinterpret_cast<char *>(entries), size);
   }
   friend std::ostream& operator<< (std::ostream &stream, MODF& me){
-		chunkHeader CHeader("MODF",me.size);
-		stream << CHeader;
-		stream.write(reinterpret_cast<char *>(me.entries),me.size);
+        chunkHeader CHeader("MODF",me.size);
+        stream << CHeader;
+        stream.write(reinterpret_cast<char *>(me.entries),me.size);
 
-		return stream;
-	}
+        return stream;
+    }
 };
 
 #endif

@@ -10,16 +10,16 @@ include(cmake/settings.cmake)
 
 #global includes
 INCLUDE_DIRECTORIES(
-	${PROJECT_SOURCE_DIR}/core
-	${PROJECT_SOURCE_DIR}/core/chunks
+    ${PROJECT_SOURCE_DIR}/core
+    ${PROJECT_SOURCE_DIR}/core/chunks
 )
 
 #add subdirectories according to selected cmake options
 add_subdirectory(core)
 if (CONSOLE_TOOLS)
-	add_subdirectory(console_tools)
+    add_subdirectory(console_tools)
 endif ()
 
 if (GUI)
-	add_subdirectory(gui)
+    add_subdirectory(gui)
 endif ()

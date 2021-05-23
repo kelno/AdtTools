@@ -20,23 +20,23 @@ struct MDDFEntry {
 
 class MDDF {
 public:
-	unsigned int size;
+    unsigned int size;
     MDDFEntry* entries;
 
-	MDDF(std::fstream& adtFile, unsigned int startByte) {  
-		adtFile.seekg(startByte);
-		chunkHeader MDDFHeader(adtFile);
-		size = MDDFHeader.chunkSize;
-		entries = (MDDFEntry*)new char[size];
-		adtFile.read(reinterpret_cast<char *>(entries), size);
+    MDDF(std::fstream& adtFile, unsigned int startByte) {  
+        adtFile.seekg(startByte);
+        chunkHeader MDDFHeader(adtFile);
+        size = MDDFHeader.chunkSize;
+        entries = (MDDFEntry*)new char[size];
+        adtFile.read(reinterpret_cast<char *>(entries), size);
     }
-	friend std::ostream& operator<< (std::ostream &stream, MDDF& me){
-		chunkHeader CHeader("MDDF",me.size);
-		stream << CHeader;
-		stream.write(reinterpret_cast<char *>(me.entries),me.size);
+    friend std::ostream& operator<< (std::ostream &stream, MDDF& me){
+        chunkHeader CHeader("MDDF",me.size);
+        stream << CHeader;
+        stream.write(reinterpret_cast<char *>(me.entries),me.size);
 
-		return stream;
-	}
+        return stream;
+    }
 };
 
 #endif
