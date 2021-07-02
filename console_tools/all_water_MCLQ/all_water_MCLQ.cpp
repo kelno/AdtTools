@@ -9,6 +9,7 @@ int AllWaterMCLQ::Work(int argc, char* argv[])
     //Init
     std::string targetADTFilename = argv[2];
     float height = (float)atof(argv[3]);
+    int type = atoi(argv[4]);
 
     std::fstream* targetFile = nullptr;
     adt* targetADT = nullptr;
@@ -37,7 +38,7 @@ int AllWaterMCLQ::Work(int argc, char* argv[])
     }
 
     //Set water
-    targetADT->AllWaterMCLQ(height);
+    targetADT->AllWaterMCLQ(height, MCNK::MCNKFlags(type));
     sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Water set to %f", height);
 
     //Cleaning up

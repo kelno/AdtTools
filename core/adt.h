@@ -50,7 +50,7 @@ public:
     void WriteToDisk(std::fstream& adtFile); 
 
     //MCLQ is the only water supported by <= BC clients (this is also retro-supported by later clients)
-    void AllWaterMCLQ(float height);
+    void AllWaterMCLQ(float height, MCNK::MCNKFlags flags = MCNK::MCNKFlags::FLAG_LQ_RIVER);
 private:
     std::vector<char> buffedAdtFile; //adt file
 };

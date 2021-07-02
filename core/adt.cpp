@@ -199,10 +199,10 @@ void adt::WriteToDisk(fstream& adtFile)
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Done writing adt data");
 }
 
-void adt::AllWaterMCLQ(float height)
+void adt::AllWaterMCLQ(float height,MCNK::MCNKFlags flags)
 {
     for (int i = 0; i < MCNK::ENTRY_COUNT; i++) {
         mcnk->entries[i].mclq = new MCLQ(height, 0.0f, MCLQ_FLAG1_UNK_3, MCLQ_FLAG2_NONE);
-        mcnk->entries[i].header.flags |= MCNK::FLAG_LQ_RIVER;
+        mcnk->entries[i].header.flags |= flags;
     }
 }

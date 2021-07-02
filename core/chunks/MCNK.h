@@ -49,7 +49,7 @@ struct MCNKHeader // --schlumpf_ 17:01, 10 August 2009 (CEST), based on: 03-29-2
 //a chaque edit qui change la taille changer le mcin
 class MCNK {
 public:
-    enum
+    enum MCNKFlags
     {
         ENTRY_COUNT = 16*16,
 

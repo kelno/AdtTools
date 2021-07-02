@@ -11,7 +11,7 @@ public:
         //command name
         "allwater",
         //version
-        "0.2",
+        "0.3",
         //short description
         "Fill adt with (pre-LK) water with given level",
         //full description
@@ -19,7 +19,8 @@ public:
         //arguments
         { 
             ToolArgument("target adt", "Set water to this adt"), 
-            ToolArgument("height", "Water height") 
+            ToolArgument("height", "Water height"),
+            ToolArgument("type", "4 - River / 8 - Ocean / 16 Magma (you can combine them as well)")
         }
     )
     { }
