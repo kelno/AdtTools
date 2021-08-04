@@ -65,3 +65,5 @@ target_link_libraries( GUI
 )
 
 qt5_use_modules(GUI Widgets Core)
+
+install(TARGETS GUI DESTINATION ${CMAKE_INSTALL_PREFIX})

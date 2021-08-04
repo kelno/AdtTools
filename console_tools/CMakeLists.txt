@@ -22,4 +22,6 @@ add_dependencies(ConsoleTools Core)
 
 target_link_libraries(ConsoleTools
     Core
-) 
+)
+
+install(TARGETS ConsoleTools DESTINATION ${CMAKE_INSTALL_PREFIX})
