@@ -14,11 +14,6 @@ Logger::Logger(LogLevel level) :
 #endif
 }
 
-Logger::~Logger() 
-{
-
-}
-
 Logger::LogLevel Logger::GetLogLevel() const 
 {
     return logLevel;

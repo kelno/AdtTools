@@ -6,24 +6,24 @@
 
 struct MH2O_Header
 {
-/*0x000*/ unsigned int ofsInformation;            //An offset to the MH2O_Information struct(s) for this chunk.
-/*0x004*/ unsigned int layerCount;                //0 if the chunk has no liquids. If > 1, the offsets will point to arrays.
-/*0x008*/ unsigned int ofsRender;                //An offset to the 64 bit render mask.
+/*0x000*/ unsigned int ofsInformation;            // An offset to the MH2O_Information struct(s) for this chunk.
+/*0x004*/ unsigned int layerCount;                // 0 if the chunk has no liquids. If > 1, the offsets will point to arrays.
+/*0x008*/ unsigned int ofsRender;                 // An offset to the 64 bit render mask.
 /*0x012*/
 };
 
 struct MH2O_Information
 {
-/*0x000*/    unsigned short liquidTypeId;            //Points to LiquidType.dbc
-/*0x002*/    unsigned short flags;                  
-/*0x004*/    float minHeightLevel;                   // as used in bounding radius calculations //The global liquid-height of this chunk. Which is always in there twice. Blizzard knows why
-/*0x008*/    float maxHeightLevel;
-/*0x00C*/    char xOffset;                //The X offset of the liquid square (0-7)
-/*0x00D*/    char yOffset;                //The Y offset of the liquid square (0-7)
-/*0x00E*/    char width;                    //The width of the liquid square (1-8)
-/*0x00F*/    char height;                 //The height of the liquid square (1-8)
-/*0x010*/    unsigned int Mask2;                // points to an array of bits with information about the mask. w*h bits (=h bytes). If Mask2 == 0 and Render == 0, then there is no HeightMapData
-/*0x014*/    unsigned int HeightmapData;    //Offset to MH2O_HeightmapData structure for this chunk.
+/*0x000*/ unsigned short liquidTypeId;  // Points to LiquidType.dbc
+/*0x002*/ unsigned short flags;                  
+/*0x004*/ float minHeightLevel;         // As used in bounding radius calculations //The global liquid-height of this chunk. Which is always in there twice. Blizzard knows why
+/*0x008*/ float maxHeightLevel;
+/*0x00C*/ char xOffset;                 // The X offset of the liquid square (0-7)
+/*0x00D*/ char yOffset;                 // The Y offset of the liquid square (0-7)
+/*0x00E*/ char width;                   // The width of the liquid square (1-8)
+/*0x00F*/ char height;                  // The height of the liquid square (1-8)
+/*0x010*/ unsigned int Mask2;           // Points to an array of bits with information about the mask. w*h bits (=h bytes). If Mask2 == 0 and Render == 0, then there is no HeightMapData
+/*0x014*/ unsigned int HeightmapData;   // Offset to MH2O_HeightmapData structure for this chunk.
 /*0x018*/
 };
 
@@ -32,7 +32,7 @@ struct MH2O_HeightmapData
     // if type & 1 != 1, this chunk is "ocean".  in this case, do not use this structure.
 
     float* heightMap;     // w*h
-    char* transparency;     // w*h
+    char* transparency;   // w*h
 };
 //BWAAAH. Refaire des classes, trop compliqué, trop d'inconnues.
 class MH2O {
@@ -53,7 +53,7 @@ public:
         /*
         //le bloc Info a obligé une taille fixe nan? Dans le doute
         unsigned int start = (unsigned int)adtFile.tellp();
-        for (int i = 0; i < 256; i++) 
+        for (int i = 0; i < 256; ++i) 
         {
             adtFile.seekp(start + i * sizeof(Header));
             adtFile.read(reinterpret_cast<char *>(&Header[i]), sizeof(MH2O_Header));

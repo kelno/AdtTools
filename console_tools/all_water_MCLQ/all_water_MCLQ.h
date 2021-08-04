@@ -11,16 +11,16 @@ public:
         //command name
         "allwater",
         //version
-        "0.3",
+        "0.4",
         //short description
         "Fill adt with (pre-LK) water with given level",
         //full description
-        "Adds 'MCLQ' water that can be parsed by clients of all versions. You should still prefer using the usual AllWater for >= LK clients, which put 'MH20' water, and most tools only supports this one.",
+        "Adds 'MCLQ' water that can be parsed by clients of all versions. You should still prefer using the usual AllWater for >= LK clients, which put 'MH20' water, and most tools only supports that one.",
         //arguments
         { 
             ToolArgument("target adt", "Set water to this adt"), 
             ToolArgument("height", "Water height"),
-            ToolArgument("type", "4 - River / 8 - Ocean / 16 Magma (you can combine them as well)")
+            ToolArgument("type", "4 - River / 8 - Ocean (height always 0) / 16 Magma (NYI)")
         }
     )
     { }

@@ -1,34 +1,19 @@
 #include "adt.h"
 #include "logger.h"
 
-#define MHDR_OFFSET (2*sizeof(chunkHeader) + MVER_SIZE)
+unsigned int constexpr MHDR_OFFSET = (2u * sizeof(chunkHeader) + MVER_SIZE);
 using namespace std;
 
 adt::adt(fstream& adtFile)
 {
-    //copy the file in buffedAdtFile
-    {
-        //reserve size
-        adtFile.seekg(0, std::ios::end);
-        std::streamsize size = adtFile.tellg();
-        buffedAdtFile = std::vector<char>(size);
-
-        //read
-        adtFile.seekg(0, std::ios::beg);
-        if(!adtFile.read(buffedAdtFile.data(), size))
-        {
-            sLogger->Out(Logger::LOG_LEVEL_ERROR, "Could not get adt file in memory, aborting.");
-            exit(1);
-        }
-    }
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Extracting adt data");
 
     //reset read position at file start, to be sure
     adtFile.seekg(0, std::ios_base::beg); 
     try {
         sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mver...");
-        mver = new MVER(adtFile);
-    } catch (char* e) {
+        mver = std::make_unique<MVER>(adtFile);
+    } catch (char const* e) {
         sLogger->Out(Logger::LOG_LEVEL_ERROR, "Exception when constructing MVER : %s", e);
         sLogger->Out(Logger::LOG_LEVEL_ERROR, "Is this an adt file? Aborting...");
         exit(1);
@@ -37,8 +22,8 @@ adt::adt(fstream& adtFile)
     try 
     {
         sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mhdr...");
-        mhdr = new MHDR(adtFile, MHDR_OFFSET - sizeof(chunkHeader));
-    } catch (char* e) {
+        mhdr = std::make_unique<MHDR>(adtFile, MHDR_OFFSET - unsigned int(sizeof(chunkHeader)));
+    } catch (char const* e) {
         sLogger->Out(Logger::LOG_LEVEL_ERROR, "Exception when constructing MHDR : %s", e);
         sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Read position %xh", (int)adtFile.tellg());
         sLogger->Out(Logger::LOG_LEVEL_ERROR, "Cannot continue, aborting...");
@@ -51,8 +36,8 @@ adt::adt(fstream& adtFile)
         try {
             sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mcin...");
             if (mhdr->offsMCIN) 
-                mcin = new MCIN(adtFile, MHDR_OFFSET + mhdr->offsMCIN);
-        } catch (char* e) {
+                mcin = std::make_unique<MCIN>(adtFile, MHDR_OFFSET + mhdr->offsMCIN);
+        } catch (char const* e) {
             sLogger->Out(Logger::LOG_LEVEL_ERROR, "Exception when constructing MCIN : %s", e);
         }
     }
@@ -60,44 +45,55 @@ adt::adt(fstream& adtFile)
     {
         try {
             sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mtex...");
-            mtex = new MTEX(adtFile, MHDR_OFFSET + mhdr->offsMTEX);
-            //std::cout << mtex->debug_log << endl;
-        } catch (char* e) {
+            mtex = std::make_unique<MTEX>(adtFile, MHDR_OFFSET + mhdr->offsMTEX);
+        } catch (char const* e) {
             sLogger->Out(Logger::LOG_LEVEL_ERROR, "Exception when constructing MTEX : %s", e);
         }
     }  else
         mtex = nullptr;
 
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mmdx...");
-    if (mhdr->offsMMDX) mmdx = new MMDX(adtFile, MHDR_OFFSET + mhdr->offsMMDX);
+    if (mhdr->offsMMDX) 
+        mmdx = std::make_unique<MMDX>(adtFile, MHDR_OFFSET + mhdr->offsMMDX);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mmid...");
-    if (mhdr->offsMMID) mmid = new MMID(adtFile, MHDR_OFFSET + mhdr->offsMMID);
+    if (mhdr->offsMMID) 
+        mmid = std::make_unique<MMID>(adtFile, MHDR_OFFSET + mhdr->offsMMID);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mwmo...");
-    if (mhdr->offsMWMO) mwmo = new MWMO(adtFile, MHDR_OFFSET + mhdr->offsMWMO);
+    if (mhdr->offsMWMO) 
+        mwmo = std::make_unique<MWMO>(adtFile, MHDR_OFFSET + mhdr->offsMWMO);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mwid...");
-    if (mhdr->offsMWID) mwid = new MWID(adtFile, MHDR_OFFSET + mhdr->offsMWID);
+    if (mhdr->offsMWID) 
+        mwid = std::make_unique<MWID>(adtFile, MHDR_OFFSET + mhdr->offsMWID);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mddf...");
-    if (mhdr->offsMDDF) mddf = new MDDF(adtFile, MHDR_OFFSET + mhdr->offsMDDF);
+    if (mhdr->offsMDDF) 
+        mddf = std::make_unique<MDDF>(adtFile, MHDR_OFFSET + mhdr->offsMDDF);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting modf...");
-    if (mhdr->offsMODF) modf = new MODF(adtFile, MHDR_OFFSET + mhdr->offsMODF);
+    if (mhdr->offsMODF) 
+        modf = std::make_unique<MODF>(adtFile, MHDR_OFFSET + mhdr->offsMODF);
 
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mcnk...");
-    mcnk = new MCNK(adtFile, mcin);
+    mcnk = std::make_unique<MCNK>(adtFile, mcin.get());
 
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mfbo...");
-    if (mhdr->offsMFBO)    mfbo = new MFBO(adtFile, MHDR_OFFSET + mhdr->offsMFBO);
+    if (mhdr->offsMFBO)    
+        mfbo = std::make_unique<MFBO>(adtFile, MHDR_OFFSET + mhdr->offsMFBO);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mh2o...");
-    if (mhdr->offsMH2O)    mh2o = new MH2O(adtFile, MHDR_OFFSET + mhdr->offsMH2O);
+    if (mhdr->offsMH2O)    
+        mh2o = std::make_unique<MH2O>(adtFile, MHDR_OFFSET + mhdr->offsMH2O);
+
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Extracting mtxf...");
-    if (mhdr->offsMTXF)    mtxf = new MTXF(adtFile, MHDR_OFFSET + mhdr->offsMTXF);
+    if (mhdr->offsMTXF)    
+        mtxf = std::make_unique<MTXF>(adtFile, MHDR_OFFSET + mhdr->offsMTXF);
+
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Extracting done");
 
     //TODO ValidityCheck
-}
-
-adt::~adt()
-{
-    //todo, free memory
 }
 
 void adt::WriteToDisk(fstream& adtFile)
@@ -164,7 +160,7 @@ void adt::WriteToDisk(fstream& adtFile)
     } else { mhdr->offsMODF = NULL; }
 
     sLogger->Out(Logger::LOG_LEVEL_DEBUG, "Writing mcnk...");
-    mcnk->mcin = mcin; //update link
+    mcnk->mcin = mcin.get(); //update link
     adtFile << (*mcnk); 
     if(mfbo) 
     {
@@ -199,10 +195,10 @@ void adt::WriteToDisk(fstream& adtFile)
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Done writing adt data");
 }
 
-void adt::AllWaterMCLQ(float height,MCNK::MCNKFlags flags)
+void adt::AllWaterMCLQ(float height, MCNKFlags flags)
 {
-    for (int i = 0; i < MCNK::ENTRY_COUNT; i++) {
-        mcnk->entries[i].mclq = new MCLQ(height, 0.0f, MCLQ_FLAG1_UNK_3, MCLQ_FLAG2_NONE);
-        mcnk->entries[i].header.flags |= flags;
+    for (int i = 0; i < CHUNKS_PER_ADT; ++i) {
+        mcnk->entries[i].header.flags = flags;
+        mcnk->entries[i].mclq = std::make_unique<MCLQ>(mcnk->entries[i], height);
     }
 }

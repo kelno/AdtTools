@@ -19,11 +19,10 @@ public:
         LOG_LEVEL_DEBUG    = 2
     };
 
-    //initialise the Logger with given log level. A message with a higher log level than the logger log level will not be printed to console.
+    // Initialise the Logger with given log level. A message with a higher log level than the logger log level will not be printed to console.
     Logger(LogLevel level = LOG_LEVEL_NORMAL);
-    ~Logger();
 
-    //create a Logger object if none exists, else returns the already existing one
+    // Create a Logger object if none exists, else returns the already existing one
     static Logger* instance()
     {
         static Logger instance;
@@ -44,6 +43,7 @@ public:
 
 private:
     void Run();
+
     std::queue<std::pair<LogLevel, std::string>> outputQueue; //level + message
     std::mutex queueMutex;
 

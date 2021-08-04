@@ -46,36 +46,36 @@ struct MCNKHeader // --schlumpf_ 17:01, 10 August 2009 (CEST), based on: 03-29-2
 /*0x080*/
 };
 
+struct MCNKEntry {
+    MCNKHeader header;
+    std::unique_ptr<MCVT> mcvt;
+    std::unique_ptr<MCNR> mcnr;
+    std::unique_ptr<MCLY> mcly;
+    std::unique_ptr<MCRF> mcrf;
+    std::unique_ptr<MCSH> mcsh;
+    std::unique_ptr<MCAL> mcal;
+    std::unique_ptr<MCSE> mcse;
+    std::unique_ptr<MCLQ> mclq;
+    std::unique_ptr<MCCV> mccv;
+};
+
+enum MCNKFlags : unsigned int
+{
+    //flags
+    FLAG_MCSH     = 0x1, // shadow?
+    FLAG_IMPASS   = 0x2,
+    FLAG_LQ_RIVER = 0x4,
+    FLAG_LQ_OCEAN = 0x8,
+    FLAG_LQ_MAGMA = 0x10,
+    FLAG_MCCV     = 0x20
+};
+
 //a chaque edit qui change la taille changer le mcin
 class MCNK {
 public:
-    enum MCNKFlags
-    {
-        ENTRY_COUNT = 16*16,
-
-        //flags
-        FLAG_MCSH = 1,
-        FLAG_IMPASS = 2,
-        FLAG_LQ_RIVER = 4,
-        FLAG_LQ_OCEAN = 8,
-        FLAG_LQ_MAGMA = 16,
-        FLAG_MCCV = 32
-    };
-
-    //unsigned int totalSize;
     MCIN* mcin;
-    struct MCNKEntry {
-        MCNKHeader header;
-        MCVT* mcvt = nullptr;
-        MCNR* mcnr = nullptr;
-        MCLY* mcly = nullptr;
-        MCRF* mcrf = nullptr;
-        MCSH* mcsh = nullptr;
-        MCAL* mcal = nullptr;
-        MCSE* mcse = nullptr;
-        MCLQ* mclq = nullptr;
-        MCCV* mccv = nullptr;
-    } entries[ENTRY_COUNT];
+
+    std::array<MCNKEntry, CHUNKS_PER_ADT> entries;
 
     MCNK(std::fstream& adtFile, MCIN* mcin);
     friend std::ostream& operator<< (std::ostream &stream, MCNK& me);

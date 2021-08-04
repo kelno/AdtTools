@@ -51,16 +51,16 @@ unsigned int ConsoleTool::GetMaxArgumentCount() const
     return unsigned int(arguments.size());
 }
 
-std::fstream* ConsoleTool::OpenAdtFile(std::string fileName, adt*& ADT)
+std::pair<std::unique_ptr<std::fstream>, std::unique_ptr<adt>> ConsoleTool::OpenAdtFile(std::string fileName)
 {
-    std::fstream* file = new std::fstream(fileName, std::ios::in | std::ios::out | std::ios::binary);
+    std::unique_ptr<std::fstream> file = std::make_unique<std::fstream>(fileName, std::ios::in | std::ios::out | std::ios::binary);
     if (!file->is_open())
     {
         sLogger->Out(Logger::LogLevel::LOG_LEVEL_ERROR, "Could not open file: %s", fileName);
-        return nullptr;
+        return { nullptr, nullptr };
     }
 
-    ADT = new adt(*file);
+    std::unique_ptr<adt> ADT = std::make_unique<adt>(*file);
 
-    return file;
+    return { std::move(file), std::move(ADT) };
 }

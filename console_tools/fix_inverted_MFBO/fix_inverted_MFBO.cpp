@@ -7,32 +7,14 @@
 int FixInvertedMFBO::Work(int argc, char* argv[])
 {
     //Init
-    std::fstream* targetFile = nullptr;
-    adt* targetADT = nullptr;
     std::string targetADTFilename = argv[2];
 
-    auto cleanAll = [&]()
-    {
-        if (targetFile)
-        {
-            if(targetFile->is_open())
-                targetFile->close();
+    std::unique_ptr<std::fstream> targetFile;
+    std::unique_ptr<adt> targetADT;
+    std::tie(targetFile, targetADT) = OpenAdtFile(targetADTFilename);
 
-            delete targetFile;
-            targetFile = nullptr;
-        }
-        if (targetADT)
-        {
-            delete targetADT;
-            targetADT = nullptr;
-        }
-    };
-
-    if (!(targetFile = OpenAdtFile(targetADTFilename, targetADT)))
-    {
-        cleanAll();
+    if (!targetFile)
         return 1;
-    }
 
     //Fix the bug if needed
     if (targetADT->mfbo)
@@ -51,9 +33,6 @@ int FixInvertedMFBO::Work(int argc, char* argv[])
     else {
         sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s has no MFBO data, nothing to do.", targetADTFilename.c_str());
     }
-
-    //Done, cleaning up
-    cleanAll();
 
     return 0;
 }

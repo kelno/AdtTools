@@ -4,7 +4,7 @@
 #include "chunkHeader.h"
 #include "logger.h"
 
-#define MVER_SIZE sizeof(int)
+unsigned int constexpr MVER_SIZE = sizeof(int);
 
 class MVER 
 {
@@ -16,10 +16,10 @@ public:
     { 
         adtFile.seekg(std::ios::beg);
         chunkHeader MVER_CHeader(adtFile);
-        if (std::strncmp(MVER_CHeader.title,"REVM",4) != 0)
+        if (std::strncmp(MVER_CHeader.title, "REVM", 4) != 0)
             throw("Invalid Header");
 
-        adtFile.read(reinterpret_cast<char *>(&version), MVER_SIZE);
+        adtFile.read(reinterpret_cast<char*>(&version), MVER_SIZE);
     }
 
     MVER(unsigned int version) :

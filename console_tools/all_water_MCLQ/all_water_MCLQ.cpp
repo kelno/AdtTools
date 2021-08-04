@@ -9,41 +9,21 @@ int AllWaterMCLQ::Work(int argc, char* argv[])
     //Init
     std::string targetADTFilename = argv[2];
     float height = (float)atof(argv[3]);
-    int type = atoi(argv[4]);
+    MCNKFlags type = MCNKFlags(atoi(argv[4]));
 
-    std::fstream* targetFile = nullptr;
-    adt* targetADT = nullptr;
+    std::unique_ptr<std::fstream> targetFile;
+    std::unique_ptr<adt> targetADT;
+    std::tie(targetFile, targetADT) = OpenAdtFile(targetADTFilename);
 
-    auto cleanAll = [&]()
-    {
-        if (targetFile)
-        {
-            if (targetFile->is_open())
-                targetFile->close();
-
-            delete targetFile;
-            targetFile = nullptr;
-        }
-        if (targetADT)
-        {
-            delete targetADT;
-            targetADT = nullptr;
-        }
-    };
-
-    if (!(targetFile = OpenAdtFile(targetADTFilename, targetADT)))
-    {
-        cleanAll();
+    if (!targetFile)
         return 1;
-    }
 
     //Set water
-    targetADT->AllWaterMCLQ(height, MCNK::MCNKFlags(type));
+    targetADT->AllWaterMCLQ(height, type);
     sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Water set to %f", height);
 
     //Cleaning up
     targetADT->WriteToDisk(*targetFile);
-    cleanAll();
 
     return 0;
 }

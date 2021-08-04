@@ -5,14 +5,16 @@
 #include <iomanip>
 #include <iostream>
 
-#define CHUNKHEADER_SIZE 8
-
 /*
 chunkHeader
     000h char[4] titre
     004h uint32 chunkSize
     008h -
 */
+
+unsigned int constexpr CHUNKHEADER_SIZE = 8;
+unsigned int constexpr CHUNKS_PER_SIDE = 16;
+unsigned int constexpr CHUNKS_PER_ADT = CHUNKS_PER_SIDE * CHUNKS_PER_SIDE;
 
 class chunkHeader {
 public:

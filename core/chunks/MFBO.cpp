@@ -11,10 +11,10 @@ MFBO::MFBO(std::fstream& adtFile, unsigned int startByte) {
 
 void MFBO::set(short min, short max)
 {
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 3; ++i)
         for(int j = 0; j < 3; j++)
             maximum.height[i][j] = max;
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 3; ++i)
         for(int j = 0; j < 3; j++)
             minimum.height[i][j] = min;
 };

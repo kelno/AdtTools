@@ -60,8 +60,8 @@ protected:
     ConsoleTool(std::string const& commandName, std::string const& version, std::string const& shortDescription, std::string const& fullDescription, std::list<ToolArgument> const& arguments);
 
     //helpers, use if you want
-    /* try opening fileName into adt, return the file stream on success, else print an error and return an empty pointer. */
-    std::fstream* OpenAdtFile(std::string fileName, adt*& adt);
+    /* try opening fileName into adt, return the file stream and adt on success, else print an error and return an empty file stream pointer. */
+    std::pair<std::unique_ptr<std::fstream>, std::unique_ptr<adt>> OpenAdtFile(std::string fileName);
 
 private:
     std::string commandName;

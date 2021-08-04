@@ -34,10 +34,10 @@ public:
         adtFile.read(reinterpret_cast<char *>(&flags), sizeof(MHDR));
      }
 
-     friend std::ostream& operator<< (std::ostream &stream, MHDR& me){
-        chunkHeader CHeader("MHDR",sizeof(MHDR));
+     friend std::ostream& operator<< (std::ostream &stream, MHDR& me) {
+        chunkHeader CHeader("MHDR", sizeof(MHDR));
         stream << CHeader;
-        stream.write((char*)&me.flags,sizeof(MHDR));
+        stream.write((char*)&me.flags, sizeof(MHDR));
 
         return stream;
     }

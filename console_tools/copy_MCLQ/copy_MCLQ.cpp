@@ -6,66 +6,34 @@
 
 int CopyMCLQ::Work(int argc, char* argv[])
 {
-    //Init
-    std::fstream* sourceFile = nullptr;
-    std::fstream* targetFile = nullptr;
-    adt* sourceADT = nullptr;
-    adt* targetADT = nullptr;
     std::string sourceADTFilename = argv[2];
     std::string targetADTFilename = argv[3];
 
-    auto cleanAll = [&]()
-    {
-        if (sourceFile)
-        {
-            if(sourceFile->is_open())
-                sourceFile->close();
+    std::unique_ptr<std::fstream> sourceFile;
+    std::unique_ptr<adt> sourceADT;
+    std::tie(sourceFile, sourceADT) = OpenAdtFile(sourceADTFilename);
 
-            delete sourceFile;
-            sourceFile = nullptr;
-        }
-        if (targetFile)
-        {
-            if(targetFile->is_open())
-                targetFile->close();
+    std::unique_ptr<std::fstream> targetFile;
+    std::unique_ptr<adt> targetADT;
+    std::tie(targetFile, targetADT) = OpenAdtFile(targetADTFilename);
 
-            delete targetFile;
-            targetFile = nullptr;
-        }
-        if (sourceADT)
-        {
-            delete sourceADT;
-            sourceADT = nullptr;
-
-        }
-        if (targetADT)
-        {
-            delete targetADT;
-            targetADT = nullptr;
-        }
-    };
-
-    if (!(sourceFile = OpenAdtFile(sourceADTFilename, sourceADT)))
-    {
-        cleanAll();
+    if (!sourceFile)
         return 1;
-    }
 
-    if (!(targetFile = OpenAdtFile(targetADTFilename, targetADT)))
-    {
-        cleanAll();
+    if (!targetFile)
         return 1;
-    }
 
-    //Copy all water chunks
-    for (unsigned int i = 0; i < MCNK::ENTRY_COUNT; i++)
-        targetADT->mcnk->entries[i].mclq = sourceADT->mcnk->entries[i].mclq;
+    // Copy all water chunks
+    for (unsigned int i = 0; i < CHUNKS_PER_ADT; i++)
+    {
+        targetADT->mcnk->entries[i].header.flags = sourceADT->mcnk->entries[i].header.flags;
+        targetADT->mcnk->entries[i].mclq = std::move(sourceADT->mcnk->entries[i].mclq);
+    }
 
     sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "Water copied from %s to %s", sourceADTFilename.c_str(), targetADTFilename.c_str());
 
-    //Done, cleaning up
+    // Done, cleaning up
     targetADT->WriteToDisk(*targetFile);
-    cleanAll();
 
     return 0;
 }

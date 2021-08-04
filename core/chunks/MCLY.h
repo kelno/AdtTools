@@ -21,7 +21,7 @@ public:
         adtFile.seekg(startByte);
         chunkHeader CHeader(adtFile);
         unsigned int size = CHeader.chunkSize;
-        for (unsigned int i = 0; i < (size / sizeof(Layer)); i++) {
+        for (unsigned int i = 0; i < (size / sizeof(Layer)); ++i) {
             Layer cur;
             adtFile.read(reinterpret_cast<char *>(&cur), sizeof(Layer));
             Layers.push_back(cur);
