@@ -39,7 +39,7 @@ public:
 
     friend std::ostream& operator<< (std::ostream &stream, MODF& me)
     {
-        ChunkHeader CHeader("MODF",me.size);
+        ChunkHeader CHeader("MODF", me.size);
         stream << CHeader;
         stream.write(reinterpret_cast<char *>(me.entries),me.size);
 

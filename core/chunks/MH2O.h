@@ -44,7 +44,7 @@ public:
     std::vector<double> RenderMasks;
     std::vector<double> RenderMasks2;
     std::vector<MH2O_HeightmapData> HeightmapData; */
-    char* fill;
+    std::vector<char> fill;
     unsigned int remainingBytes;
 
     MH2O(std::fstream& adtFile, unsigned int startByte) 
@@ -93,18 +93,21 @@ public:
         remainingBytes = (unsigned int)adtFile.tellg() - (startByte + sizeof(ChunkHeader)) - size;
         //std::cout << std::hex << "MH2O rem " << remainingBytes << std::endl;
         size += remainingBytes;
-        fill = new char[size];
         adtFile.seekg(startByte + sizeof(ChunkHeader));
-        adtFile.read(fill, size);
+        if (size)
+        {
+            fill.resize(size);
+            adtFile.read(&fill[0], size);
+        }
     }
 
     friend std::ostream& operator<< (std::ostream &stream, MH2O& me)
     {
-        ChunkHeader CHeader("MH2O",me.size - me.remainingBytes);
+        ChunkHeader CHeader("MH2O", me.size - me.remainingBytes);
         stream << CHeader;
-        stream.write(me.fill,me.size);
-        /*std::cout << "im at " << std::hex << stream.tellp() << std::endl;
-        std::cout << "sinon c'etait " << std::hex << (int)stream.tellp() - 82052 << std::endl;*/
+
+        if (me.size)
+            stream.write(&me.fill[0], me.size);
 
         return stream;
     }

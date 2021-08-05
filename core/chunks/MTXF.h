@@ -20,7 +20,7 @@ public:
 
     friend std::ostream& operator<< (std::ostream &stream, MTXF& me)
     {
-        ChunkHeader CHeader("MTXF",me.size);
+        ChunkHeader CHeader("MTXF", me.size);
         stream << CHeader;
         stream.write(reinterpret_cast<char *>(me.mode),me.size);
 

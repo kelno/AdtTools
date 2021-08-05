@@ -16,7 +16,7 @@ public:
 
     friend std::ostream& operator<< (std::ostream &stream, MMID& me)
     {
-        ChunkHeader CHeader("MMID",me.data->size);
+        ChunkHeader CHeader("MMID", me.data->size);
         stream << CHeader;
         stream.write(reinterpret_cast<char *>(me.data->offsets),me.data->size);
 

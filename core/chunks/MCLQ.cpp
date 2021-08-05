@@ -8,8 +8,6 @@ MCLQ::MCLQ(std::fstream& adtFile, MCNKEntry const& _mcnk, unsigned int startByte
     adtFile.seekg(startByte);
     ChunkHeader CHeader(adtFile);
     size = CHeader.chunkSize;
-    //fill = new char[size + sizeLiquid - sizeof(ChunkHeader)];
-    //adtFile.read(fill, size + sizeLiquid - sizeof(ChunkHeader));
     adtFile.read(reinterpret_cast<char *>(&entry), size + sizeLiquid - sizeof(ChunkHeader));
     //if ((mcnkEntry.header.flags & 0xF) == FLAG_LQ_RIVER)
     //{
