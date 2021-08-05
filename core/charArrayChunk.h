@@ -11,7 +11,6 @@ public:
     std::string fileNames;
     ChunkName chunkName;
 
-    CharArrayChunk() {};
     CharArrayChunk(std::string_view name, std::fstream& adtFile, unsigned int startByte);
 
     friend std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me);
