@@ -20,7 +20,7 @@ public:
         { 
             ToolArgument("target adt", "Set water to this adt"), 
             ToolArgument("height", "Water height"),
-            ToolArgument("type", "4 - River / 8 - Ocean (height always 0) / 16 Magma (NYI)")
+            ToolArgument("type", "4 - River / 8 - Ocean (height always 0) / 16 Magma (NYI)", false)
         }
     )
     { }

@@ -7,7 +7,7 @@
 int FixInvertedMFBO::Work(int argc, char* argv[])
 {
     //Init
-    std::string targetADTFilename = argv[2];
+    std::string targetADTFilename = argv[1];
 
     std::unique_ptr<std::fstream> targetFile;
     std::unique_ptr<adt> targetADT;
@@ -35,4 +35,11 @@ int FixInvertedMFBO::Work(int argc, char* argv[])
     }
 
     return 0;
+}
+
+int main(int argc, char* argv[])
+{
+    FixInvertedMFBO tool;
+
+    return tool.Main(argc, argv);
 }

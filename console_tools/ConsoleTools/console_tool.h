@@ -44,13 +44,22 @@ public:
     unsigned int GetMinArgumentCount() const;
     /* Maximum argument count. This value is dynamically calculated from the argument list */
     unsigned int GetMaxArgumentCount() const;
-    
+
     /* Main tool function, works as a main(...) 
     Note that the first command argument is at argv[2] (1 being the tool name)
     */
     virtual int Work(int argc, char* argv[]) = 0;
 
+    //helpers, use if you want
+    /* try opening fileName into adt, return the file stream and adt on success, else print an error and return an empty file stream pointer. */
+    static std::pair<std::unique_ptr<std::fstream>, std::unique_ptr<adt>> OpenAdtFile(std::string fileName);
+
+    int Main(int argc, char* argv[]);
+
 protected:
+    void PrintUsage(std::string const& commandName);
+    void ShowExtendedDescription(std::string const& commandName);
+
     /* Constructor
     @version Tool version
     @shortDescription A short description of the tool (this shouldn't exceed one sentence)
@@ -58,10 +67,6 @@ protected:
     @arguments Argument list for this tool. The given container is copied in this class
     */
     ConsoleTool(std::string const& commandName, std::string const& version, std::string const& shortDescription, std::string const& fullDescription, std::list<ToolArgument> const& arguments);
-
-    //helpers, use if you want
-    /* try opening fileName into adt, return the file stream and adt on success, else print an error and return an empty file stream pointer. */
-    std::pair<std::unique_ptr<std::fstream>, std::unique_ptr<adt>> OpenAdtFile(std::string fileName);
 
 private:
     std::string commandName;

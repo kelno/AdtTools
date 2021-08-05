@@ -7,9 +7,11 @@
 int AllWaterMCLQ::Work(int argc, char* argv[])
 {
     //Init
-    std::string targetADTFilename = argv[2];
-    float height = (float)atof(argv[3]);
-    MCNKFlags type = MCNKFlags(atoi(argv[4]));
+    std::string targetADTFilename = argv[1];
+    float height = (float)atof(argv[2]);
+    MCNKFlags type = FLAG_LQ_RIVER;
+    if (argc >= 4)
+        type = MCNKFlags(atoi(argv[3]));
 
     std::unique_ptr<std::fstream> targetFile;
     std::unique_ptr<adt> targetADT;
@@ -26,4 +28,11 @@ int AllWaterMCLQ::Work(int argc, char* argv[])
     targetADT->WriteToDisk(*targetFile);
 
     return 0;
+}
+
+int main(int argc, char* argv[])
+{
+    AllWaterMCLQ tool;
+
+    return tool.Main(argc, argv);
 }

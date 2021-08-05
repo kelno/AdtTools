@@ -6,8 +6,8 @@
 
 int CopyMCLQ::Work(int argc, char* argv[])
 {
-    std::string sourceADTFilename = argv[2];
-    std::string targetADTFilename = argv[3];
+    std::string sourceADTFilename = argv[1];
+    std::string targetADTFilename = argv[2];
 
     std::unique_ptr<std::fstream> sourceFile;
     std::unique_ptr<adt> sourceADT;
@@ -36,4 +36,11 @@ int CopyMCLQ::Work(int argc, char* argv[])
     targetADT->WriteToDisk(*targetFile);
 
     return 0;
+}
+
+int main(int argc, char* argv[])
+{
+    CopyMCLQ tool;
+
+    return tool.Main(argc, argv);
 }
