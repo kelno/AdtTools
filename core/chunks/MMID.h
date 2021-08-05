@@ -5,20 +5,18 @@
 
 #include "IntArrayChunk.h"
 
-class MMID 
+class MMID : public IntArrayChunk
 {
 public:
-    IntArrayChunk* data;
-    MMID(std::fstream& adtFile, unsigned int startByte) //comment utiliser constructeur au dessus?
-    { 
-        data = new IntArrayChunk(adtFile, startByte);
-    }
+    MMID(std::fstream& adtFile, unsigned int startByte)
+        : IntArrayChunk(adtFile, startByte)
+    { }
 
     friend std::ostream& operator<< (std::ostream &stream, MMID& me)
     {
-        ChunkHeader CHeader("MMID", me.data->size);
+        ChunkHeader CHeader("MMID", me.size);
         stream << CHeader;
-        stream.write(reinterpret_cast<char *>(me.data->offsets),me.data->size);
+        stream << *(IntArrayChunk*)(&me);
 
         return stream;
     }

@@ -6,7 +6,7 @@
 class MCCV 
 {
 public:
-    char* fill;
+    std::vector<char> fill;
     unsigned int size;
 
     MCCV(std::fstream& adtFile, unsigned int startByte) 
@@ -14,8 +14,11 @@ public:
         adtFile.seekg(startByte);
         ChunkHeader CHeader(adtFile);
         size = CHeader.chunkSize;
-        fill = new char[size];
-        adtFile.read(fill, size);
+        if (size)
+        {
+            fill.resize(size);
+            adtFile.read(&fill[0], size);
+        }
     }
     
     friend std::ostream& operator<< (std::ostream &stream, MCCV& me) 
@@ -23,7 +26,8 @@ public:
         ChunkHeader CHeader("MCCV", me.size);
         stream << CHeader;
 
-        stream.write(me.fill, me.size);        
+        if (me.size)
+            stream.write(&me.fill[0], me.size);
 
         return stream;
     }

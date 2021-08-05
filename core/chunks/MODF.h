@@ -26,22 +26,30 @@ class MODF
 {
 public:
     unsigned int size;
-    MODFEntry* entries;
+    std::vector<MODFEntry> entries;
 
     MODF(std::fstream& adtFile, unsigned int startByte) 
     { 
         adtFile.seekg(startByte);
         ChunkHeader MODFHeader(adtFile);
         size = MODFHeader.chunkSize;
-        entries = (MODFEntry*)new char[size];
-        adtFile.read(reinterpret_cast<char *>(entries), size);
+        unsigned int modfCount = size / sizeof(MODFEntry);
+        if (size % sizeof(MODFEntry) != 0)
+        {
+            sLogger->Out(Logger::LOG_LEVEL_ERROR, "MODF has a size that's not a multiple of sizeof(MODFEntry), skipping remaining bytes");
+            size = modfCount * sizeof(MODFEntry);
+        }
+
+        entries.resize(modfCount);
+        for (unsigned int i = 0; i < modfCount; ++i)
+            adtFile.read(reinterpret_cast<char*>(&entries[i]), sizeof(MODFEntry));
     }
 
     friend std::ostream& operator<< (std::ostream &stream, MODF& me)
     {
         ChunkHeader CHeader("MODF", me.size);
         stream << CHeader;
-        stream.write(reinterpret_cast<char *>(me.entries),me.size);
+        stream.write(reinterpret_cast<char*>(&me.entries[0]), me.size);
 
         return stream;
     }

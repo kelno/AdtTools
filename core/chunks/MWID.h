@@ -4,21 +4,18 @@
 
 #include "IntArrayChunk.h"
 
-class MWID  
+class MWID : public IntArrayChunk
 {
 public:
-    IntArrayChunk* data;
-
     MWID(std::fstream& adtFile, unsigned int startByte) 
-    { 
-        data = new IntArrayChunk(adtFile, startByte);
-    }
+        : IntArrayChunk(adtFile, startByte)
+    { }
 
     friend std::ostream& operator<< (std::ostream &stream, MWID& me)
     {
-        ChunkHeader CHeader("MWID", me.data->size);
+        ChunkHeader CHeader("MWID", me.size);
         stream << CHeader;
-        stream.write(reinterpret_cast<char *>(me.data->offsets),me.data->size);
+        stream << *(IntArrayChunk*)(&me);
 
         return stream;
     }
