@@ -15,7 +15,7 @@ public:
     MVER(std::fstream& adtFile)
     { 
         adtFile.seekg(std::ios::beg);
-        chunkHeader MVER_CHeader(adtFile);
+        ChunkHeader MVER_CHeader(adtFile);
         if (std::strncmp(MVER_CHeader.title, "REVM", 4) != 0)
             throw("Invalid Header");
 
@@ -26,8 +26,9 @@ public:
         version(version)
     {}
 
-    friend std::ostream& operator<< (std::ostream &stream, MVER& me){
-        chunkHeader CHeader("MVER",4);
+    friend std::ostream& operator<< (std::ostream &stream, MVER& me)
+    {
+        ChunkHeader CHeader("MVER",4);
         stream << CHeader;
         stream.write(reinterpret_cast<char *>(&me.version), MVER_SIZE);
 

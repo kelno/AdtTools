@@ -3,12 +3,11 @@
 MCNK::MCNK(std::fstream& adtFile, MCIN* mcin_) :
     mcin(mcin_)
 {
-    for (unsigned int i = 0; i < CHUNKS_PER_ADT; ++i)
-    {
+    for (unsigned int i = 0; i < CHUNKS_PER_ADT; ++i) {
         //std::cout << i;
         unsigned int MCNKChunk_Start = (unsigned int)adtFile.tellg();
         adtFile.seekg(mcin->entries[i].mcnkOffs);
-        chunkHeader CHeader(adtFile);
+        ChunkHeader CHeader(adtFile);
         mcin->entries[i].size = CHeader.chunkSize;
         adtFile.read(reinterpret_cast<char *>(&(entries[i].header.flags)), sizeof(MCNKHeader));
         if (entries[i].header.ofsMCVT) 
@@ -35,7 +34,7 @@ MCNK::MCNK(std::fstream& adtFile, MCIN* mcin_) :
         if (entries[i].header.ofsMCCV) 
             entries[i].mccv = std::make_unique<MCCV>(adtFile, MCNKChunk_Start + entries[i].header.ofsMCCV);
 
-        adtFile.seekg(MCNKChunk_Start + sizeof(chunkHeader) + mcin->entries[i].size); //get ready for next entry
+        adtFile.seekg(MCNKChunk_Start + sizeof(ChunkHeader) + mcin->entries[i].size); //get ready for next entry
 
         /*entries[i].fill = new char[entries[i].size - sizeof(MCNKHeader)];
             
@@ -52,7 +51,7 @@ std::ostream& operator<< (std::ostream& stream, MCNK& me) {
         //std::cout << "start " << std::hex << me.mcin->entries[i].mcnkOffs << std::endl;
 
         //reserving, written at the end
-        stream.seekp(sizeof(chunkHeader), std::ios_base::cur); ////std::cout << "after cheader " << std::hex << stream.tellp() << std::endl;
+        stream.seekp(sizeof(ChunkHeader), std::ios_base::cur); ////std::cout << "after cheader " << std::hex << stream.tellp() << std::endl;
         stream.seekp(sizeof(MCNKHeader), std::ios_base::cur);
 
         if (me.entries[i].mcvt) {
@@ -115,7 +114,7 @@ std::ostream& operator<< (std::ostream& stream, MCNK& me) {
         me.mcin->entries[i].size = (unsigned int)stream.tellp() - (me.mcin->entries[i].mcnkOffs);
         //std::cout << "size =  " << me.mcin->entries[i].size << std::endl;
         stream.seekp(me.mcin->entries[i].mcnkOffs);
-        chunkHeader CHeader("MCNK", me.mcin->entries[i].size - sizeof(chunkHeader));
+        ChunkHeader CHeader("MCNK", me.mcin->entries[i].size - sizeof(ChunkHeader));
         stream << CHeader;
         stream.write(reinterpret_cast<char*>(&(me.entries[i].header)), sizeof(MCNKHeader));
         stream.seekp(me.mcin->entries[i].mcnkOffs + me.mcin->entries[i].size); //ready for next

@@ -4,7 +4,8 @@
 #include "chunkHeader.h"
 
 //offsets relative to &MHDR.flags
-class MHDR {
+class MHDR 
+{
 public:
      /*000h*/  unsigned int flags;
      /*004h*/  unsigned int offsMCIN;
@@ -25,17 +26,19 @@ public:
      /*040h*/
 
      //can throw
-     MHDR(std::fstream& adtFile, unsigned int startByte) { 
+     MHDR(std::fstream& adtFile, unsigned int startByte) 
+     {
         adtFile.seekg(startByte);
-        chunkHeader MHDR_CHeader(adtFile);
+        ChunkHeader MHDR_CHeader(adtFile);
         if (std::strncmp(MHDR_CHeader.title,"RDHM",4) != 0)
             throw("Invalid Header");
 
         adtFile.read(reinterpret_cast<char *>(&flags), sizeof(MHDR));
      }
 
-     friend std::ostream& operator<< (std::ostream &stream, MHDR& me) {
-        chunkHeader CHeader("MHDR", sizeof(MHDR));
+     friend std::ostream& operator<< (std::ostream &stream, MHDR& me) 
+     {
+        ChunkHeader CHeader("MHDR", sizeof(MHDR));
         stream << CHeader;
         stream.write((char*)&me.flags, sizeof(MHDR));
 

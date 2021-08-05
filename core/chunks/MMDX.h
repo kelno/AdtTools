@@ -4,7 +4,8 @@
 
 #include "CharArrayChunk.h"
 
-class MMDX : public CharArrayChunk {
+class MMDX : public CharArrayChunk 
+{
 public:
     CharArrayChunk* data;
     MMDX(std::fstream& adtFile, unsigned int startByte) :  

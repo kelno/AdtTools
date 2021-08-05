@@ -1,43 +1,42 @@
 #include "MFBO.h"
 
-MFBO::MFBO() 
-{}
-
-MFBO::MFBO(std::fstream& adtFile, unsigned int startByte) {  
+MFBO::MFBO(std::fstream& adtFile, unsigned int startByte) 
+{  
     adtFile.seekg(startByte);
-    adtFile.seekg(sizeof(chunkHeader), std::ios_base::cur);
+    adtFile.seekg(sizeof(ChunkHeader), std::ios_base::cur);
     adtFile.read(reinterpret_cast<char *>(&maximum), sizeof(MFBO));
 }
 
-void MFBO::set(short min, short max)
+void MFBO::Set(short _min, short _max)
 {
-    for(int i = 0; i < 3; ++i)
-        for(int j = 0; j < 3; j++)
-            maximum.height[i][j] = max;
-    for(int i = 0; i < 3; ++i)
-        for(int j = 0; j < 3; j++)
-            minimum.height[i][j] = min;
+    for (auto& itr : maximum.height)
+        for (auto& max : itr)
+            max = _max;
+
+    for (auto& itr : minimum.height)
+        for (auto& min : itr)
+            min = _min;
 };
 
-const short MFBO::getMin()
+const short MFBO::GetMin()
 {
     return minimum.height[0][0];
 };
 
-const short MFBO::getMax()
+const short MFBO::GetMax()
 {
     return maximum.height[0][0];
 };
 
-bool MFBO::hasInvertedMinMax()
+bool MFBO::HasInvertedMinMax()
 {
-    if(maximum.height[0][0] < minimum.height[0][0])
+    if (maximum.height[0][0] < minimum.height[0][0])
         return true;
     else
         return false;
 };
 
-void MFBO::invertMinMax() 
+void MFBO::InvertMinMax() 
 {
-    set(getMax(),getMin());
+    Set(GetMax(), GetMin());
 };

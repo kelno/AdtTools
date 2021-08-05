@@ -34,6 +34,7 @@ struct MH2O_HeightmapData
     float* heightMap;     // w*h
     char* transparency;   // w*h
 };
+
 //BWAAAH. Refaire des classes, trop compliqué, trop d'inconnues.
 class MH2O {
 public:
@@ -46,9 +47,10 @@ public:
     char* fill;
     unsigned int remainingBytes;
 
-    MH2O(std::fstream& adtFile, unsigned int startByte) {  
+    MH2O(std::fstream& adtFile, unsigned int startByte) 
+    {  
         adtFile.seekg(startByte);
-        chunkHeader MH2OHeader(adtFile);
+        ChunkHeader MH2OHeader(adtFile);
         size = MH2OHeader.chunkSize;
         /*
         //le bloc Info a obligé une taille fixe nan? Dans le doute
@@ -88,15 +90,17 @@ public:
 
         //HACK
         adtFile.seekg(0, std::ifstream::end);
-        remainingBytes = (unsigned int)adtFile.tellg() - (startByte + sizeof(chunkHeader)) - size;
+        remainingBytes = (unsigned int)adtFile.tellg() - (startByte + sizeof(ChunkHeader)) - size;
         //std::cout << std::hex << "MH2O rem " << remainingBytes << std::endl;
         size += remainingBytes;
         fill = new char[size];
-        adtFile.seekg(startByte + sizeof(chunkHeader));
+        adtFile.seekg(startByte + sizeof(ChunkHeader));
         adtFile.read(fill, size);
     }
-    friend std::ostream& operator<< (std::ostream &stream, MH2O& me){
-        chunkHeader CHeader("MH2O",me.size - me.remainingBytes);
+
+    friend std::ostream& operator<< (std::ostream &stream, MH2O& me)
+    {
+        ChunkHeader CHeader("MH2O",me.size - me.remainingBytes);
         stream << CHeader;
         stream.write(me.fill,me.size);
         /*std::cout << "im at " << std::hex << stream.tellp() << std::endl;

@@ -25,7 +25,8 @@ TODO : Parsemer le tout d'exceptions ! Faut que ça soit robuste aux fichiers scr
 #include "MFBO.h"
 #include "MTXF.h"
 
-class adt {
+class adt 
+{
 public:
     std::unique_ptr<MVER> mver;   //version (always 12h?)
     std::unique_ptr<MHDR> mhdr;   //header

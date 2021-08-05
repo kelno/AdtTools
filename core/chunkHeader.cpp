@@ -1,22 +1,27 @@
 #include "chunkHeader.h"
 
-chunkHeader::chunkHeader(char* str, unsigned int size) :
-        chunkSize(size) {
+ChunkHeader::ChunkHeader(char* str, unsigned int size) :
+        chunkSize(size) 
+{
         title[0] = str[3];
         title[1] = str[2];
         title[2] = str[1];
         title[3] = str[0];
 }
-chunkHeader::chunkHeader(std::fstream& adtFile){
-    adtFile.read(reinterpret_cast<char *>(title), sizeof(chunkHeader));
+
+ChunkHeader::ChunkHeader(std::fstream& adtFile)
+{
+    adtFile.read(reinterpret_cast<char *>(title), sizeof(ChunkHeader));
 }
 
-std::ostream& operator<< (std::ostream &stream, chunkHeader& me) {
-    stream.write(me.title, sizeof(chunkHeader));
+std::ostream& operator<< (std::ostream &stream, ChunkHeader& me) 
+{
+    stream.write(me.title, sizeof(ChunkHeader));
     return stream;
 }
 
-char* chunkHeader::invertTitle(char* title) {  //pour une output
+char* ChunkHeader::InvertTitle(char* title) 
+{
     char* newTitle = new char[4];
     newTitle[0] = title[3];
     newTitle[1] = title[2];

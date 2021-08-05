@@ -71,7 +71,8 @@ enum MCNKFlags : unsigned int
 };
 
 //a chaque edit qui change la taille changer le mcin
-class MCNK {
+class MCNK 
+{
 public:
     MCIN* mcin;
 

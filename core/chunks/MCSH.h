@@ -3,20 +3,24 @@
 
 #include "chunkHeader.h"
 
-class MCSH {
+class MCSH 
+{
 public:
     char* fill;
     unsigned int size;
 
-    MCSH(std::fstream& adtFile, unsigned int startByte){
+    MCSH(std::fstream& adtFile, unsigned int startByte) 
+    {
         adtFile.seekg(startByte);
-        chunkHeader CHeader(adtFile);
+        ChunkHeader CHeader(adtFile);
         size = CHeader.chunkSize;
         fill = new char[size];
         adtFile.read(fill, size);
     }
-    friend std::ostream& operator<< (std::ostream &stream, MCSH& me) {
-        chunkHeader CHeader("MCSH", me.size);
+
+    friend std::ostream& operator<< (std::ostream &stream, MCSH& me) 
+    {
+        ChunkHeader CHeader("MCSH", me.size);
         stream << CHeader;
 
         stream.write(me.fill, me.size);        

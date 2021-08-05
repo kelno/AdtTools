@@ -13,13 +13,15 @@ struct Layer // 03-29-2005 By ObscuR, --schlumpf_ 19:47, 19 August 2009 (CEST)
 /*010h*/          
 };
 
-class MCLY {
+class MCLY 
+{
 public:
     std::vector<Layer> Layers;
         
-    MCLY(std::fstream& adtFile, unsigned int startByte) {
+    MCLY(std::fstream& adtFile, unsigned int startByte) 
+    {
         adtFile.seekg(startByte);
-        chunkHeader CHeader(adtFile);
+        ChunkHeader CHeader(adtFile);
         unsigned int size = CHeader.chunkSize;
         for (unsigned int i = 0; i < (size / sizeof(Layer)); ++i) {
             Layer cur;
@@ -27,8 +29,9 @@ public:
             Layers.push_back(cur);
         }
     }
-    friend std::ostream& operator<< (std::ostream &stream, MCLY& me) {
-        chunkHeader CHeader("MCLY", unsigned int(me.Layers.size()) * sizeof(Layer));
+    friend std::ostream& operator<< (std::ostream &stream, MCLY& me) 
+    {
+        ChunkHeader CHeader("MCLY", unsigned int(me.Layers.size()) * sizeof(Layer));
         stream << CHeader;
 
         stream.write(reinterpret_cast<char *>(&me.Layers[0]), sizeof(Layer) * me.Layers.size());        

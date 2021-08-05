@@ -85,7 +85,8 @@ struct MCLQEntry
     // Format might be different depending on liquid type, I get consistent data for ocean but river and magma are garbage
 };
 
-class MCLQ {
+class MCLQ 
+{
 public:
     MCLQEntry entry;
     unsigned int size;

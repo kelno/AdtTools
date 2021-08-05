@@ -3,20 +3,24 @@
 
 #include "chunkHeader.h"
 
-class MCCV {
+class MCCV 
+{
 public:
     char* fill;
     unsigned int size;
 
-    MCCV(std::fstream& adtFile, unsigned int startByte){
+    MCCV(std::fstream& adtFile, unsigned int startByte) 
+    {
         adtFile.seekg(startByte);
-        chunkHeader CHeader(adtFile);
+        ChunkHeader CHeader(adtFile);
         size = CHeader.chunkSize;
         fill = new char[size];
         adtFile.read(fill, size);
     }
-    friend std::ostream& operator<< (std::ostream &stream, MCCV& me) {
-        chunkHeader CHeader("MCCV", me.size);
+    
+    friend std::ostream& operator<< (std::ostream &stream, MCCV& me) 
+    {
+        ChunkHeader CHeader("MCCV", me.size);
         stream << CHeader;
 
         stream.write(me.fill, me.size);        

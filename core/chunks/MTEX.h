@@ -4,7 +4,8 @@
 
 #include "CharArrayChunk.h"
 
-class MTEX : public CharArrayChunk {
+class MTEX : public CharArrayChunk 
+{
 public:
     //CharArrayChunk* data;
     MTEX(std::fstream& adtFile, unsigned int startByte) :

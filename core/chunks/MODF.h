@@ -8,7 +8,8 @@ enum MODFFlags {
     modf_destroyable = 1,         // set for destroyable buildings like the tower in DeathknightStart. This makes it a server-controllable game object.
   };
 */
-struct MODFEntry {
+struct MODFEntry 
+{
     unsigned int mwidEntry;           // references an entry in the MWID chunk, specifying the model to use.
     unsigned int uniqueId;            // this ID should be unique for all ADTs currently loaded. Best, they are unique for the whole map.
     float position[3];
@@ -21,20 +22,24 @@ struct MODFEntry {
     unsigned short padding;             // it reads only a WORD into the WMAPOBJDEF structure for name. I don't know about the rest.
 };
 
-class MODF {
+class MODF 
+{
 public:
-  unsigned int size;
-  MODFEntry* entries;
+    unsigned int size;
+    MODFEntry* entries;
 
-  MODF(std::fstream& adtFile, unsigned int startByte) {  
+    MODF(std::fstream& adtFile, unsigned int startByte) 
+    { 
         adtFile.seekg(startByte);
-        chunkHeader MODFHeader(adtFile);
+        ChunkHeader MODFHeader(adtFile);
         size = MODFHeader.chunkSize;
         entries = (MODFEntry*)new char[size];
         adtFile.read(reinterpret_cast<char *>(entries), size);
-  }
-  friend std::ostream& operator<< (std::ostream &stream, MODF& me){
-        chunkHeader CHeader("MODF",me.size);
+    }
+
+    friend std::ostream& operator<< (std::ostream &stream, MODF& me)
+    {
+        ChunkHeader CHeader("MODF",me.size);
         stream << CHeader;
         stream.write(reinterpret_cast<char *>(me.entries),me.size);
 

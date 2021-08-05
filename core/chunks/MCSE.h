@@ -3,20 +3,24 @@
 
 #include "chunkHeader.h"
 
-class MCSE {
+class MCSE 
+{
 public:
     char* fill;
     unsigned int size;
 
-    MCSE(std::fstream& adtFile, unsigned int startByte){
+    MCSE(std::fstream& adtFile, unsigned int startByte)
+    {
         adtFile.seekg(startByte);
-        chunkHeader CHeader(adtFile);
+        ChunkHeader CHeader(adtFile);
         size = CHeader.chunkSize;
         fill = new char[size];
         adtFile.read(fill, size);
     }
-    friend std::ostream& operator<< (std::ostream &stream, MCSE& me) {
-        chunkHeader CHeader("MCSE", me.size);
+
+    friend std::ostream& operator<< (std::ostream &stream, MCSE& me) 
+    {
+        ChunkHeader CHeader("MCSE", me.size);
         stream << CHeader;
 
         stream.write(me.fill, me.size);        

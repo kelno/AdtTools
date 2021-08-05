@@ -19,10 +19,10 @@ int FixInvertedMFBO::Work(int argc, char* argv[])
     //Fix the bug if needed
     if (targetADT->mfbo)
     {
-        if (targetADT->mfbo->hasInvertedMinMax())
+        if (targetADT->mfbo->HasInvertedMinMax())
         {
             sLogger->Out(Logger::LogLevel::LOG_LEVEL_NORMAL, "%s has inverted coordinates, fixing it.", targetADTFilename.c_str());
-            targetADT->mfbo->invertMinMax();
+            targetADT->mfbo->InvertMinMax();
 
             targetADT->WriteToDisk(*targetFile);
         }

@@ -39,11 +39,9 @@ void Logger::Out(LogLevel level, const char* msg, ...)
 void Logger::Run() 
 {
     std::pair<LogLevel, std::string> pair;
-    while(!m_stop)
-    {
+    while(!m_stop) {
         queueMutex.lock();
-        if(!outputQueue.empty())
-        {
+        if(!outputQueue.empty()) {
             pair = outputQueue.front();
             if(pair.first <= logLevel)
                 if(logLevel == LOG_LEVEL_ERROR)

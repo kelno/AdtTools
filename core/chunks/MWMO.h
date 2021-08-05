@@ -5,7 +5,8 @@
 
 #include "CharArrayChunk.h"
 
-class MWMO : public CharArrayChunk {
+class MWMO : public CharArrayChunk 
+{
 public:
     CharArrayChunk* data;
     MWMO(std::fstream& adtFile, unsigned int startByte) :

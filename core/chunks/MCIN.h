@@ -12,28 +12,33 @@ struct MCINEntry
 };
 
 // Pointers to MCNK chunks and their sizes.
-class MCIN {
+class MCIN 
+{
 public:
     MCINEntry entries[CHUNKS_PER_ADT];
 
-    MCIN(std::fstream& adtFile, unsigned int startByte) {
+    MCIN(std::fstream& adtFile, unsigned int startByte) 
+    {
         adtFile.seekg(startByte);
-        chunkHeader CHeader(adtFile);
+        ChunkHeader CHeader(adtFile);
         if (std::strncmp(CHeader.title, "NICM", 4) != 0)
             throw("MCIN constructor : Invalid Header\n");
 
         adtFile.read(reinterpret_cast<char*>(entries), sizeof(MCINEntry) * CHUNKS_PER_ADT);
     }
 
-    unsigned int getMCNKSize() {
+    unsigned int getMCNKSize() 
+    {
         unsigned int sum = 0;
         for (unsigned int i = 0; i < CHUNKS_PER_ADT; ++i) {
             sum += entries[i].size;
         }
         return sum;
     }
-    friend std::ostream& operator<< (std::ostream& stream, MCIN& me) {
-        chunkHeader CHeader("MCIN", sizeof(MCINEntry) * CHUNKS_PER_ADT);
+
+    friend std::ostream& operator<< (std::ostream& stream, MCIN& me) 
+    {
+        ChunkHeader CHeader("MCIN", sizeof(MCINEntry) * CHUNKS_PER_ADT);
         stream << CHeader;
         stream.write(reinterpret_cast<char*>(&me.entries), sizeof(MCINEntry) * CHUNKS_PER_ADT);
 
