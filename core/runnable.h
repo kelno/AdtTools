@@ -25,7 +25,7 @@ public:
     void Stop() { m_stop = true; HandleStop(); m_thread.join(); }
     /** Tells the runnable object to start the thread, calling the Run function. 
     */
-    void Start() { m_thread = std::thread(&Runnable::Run, this); }
+    void Start() { if (!m_stop) m_thread = std::thread(&Runnable::Run, this); }
 
 protected:
     /** This is called when Stop() is called, so you may do specifics actions at this time. 

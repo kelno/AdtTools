@@ -2,16 +2,17 @@
 #define CHARARRAYCHUNK_H
 
 #include "chunkHeader.h"
+#include <array>
 
 class CharArrayChunk 
 {
 public:
     unsigned int size;
-    char* fileNames;
-    char* chunkName;
+    std::string fileNames;
+    ChunkName chunkName;
 
     CharArrayChunk() {};
-    CharArrayChunk(char* name, std::fstream& adtFile, unsigned int startByte);
+    CharArrayChunk(std::string_view name, std::fstream& adtFile, unsigned int startByte);
 
     friend std::ostream& operator<< (std::ostream& stream, const CharArrayChunk& me);
 };

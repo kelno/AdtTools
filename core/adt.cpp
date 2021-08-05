@@ -2,9 +2,8 @@
 #include "logger.h"
 
 unsigned int constexpr MHDR_OFFSET = (2u * sizeof(ChunkHeader) + MVER_SIZE);
-using namespace std;
 
-adt::adt(fstream& adtFile)
+adt::adt(std::fstream& adtFile)
 {
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Extracting adt data");
 
@@ -101,7 +100,7 @@ adt::adt(fstream& adtFile)
     //TODO ValidityCheck
 }
 
-void adt::WriteToDisk(fstream& adtFile)
+void adt::WriteToDisk(std::fstream& adtFile)
 {
     sLogger->Out(Logger::LOG_LEVEL_NORMAL, "Writing adt data");
     //set write position at file beginning

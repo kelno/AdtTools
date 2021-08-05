@@ -1,31 +1,40 @@
 #include "chunkHeader.h"
 
-ChunkHeader::ChunkHeader(char* str, unsigned int size) :
+ChunkHeader::ChunkHeader(std::string_view str, unsigned int size) :
         chunkSize(size) 
 {
-        title[0] = str[3];
-        title[1] = str[2];
-        title[2] = str[1];
-        title[3] = str[0];
+    if (str.size() != CHUNK_NAME_SIZE)
+        throw ("Invalid chunk name size");
+
+    title[0] = str[3];
+    title[1] = str[2];
+    title[2] = str[1];
+    title[3] = str[0];
+}
+
+ChunkHeader::ChunkHeader(ChunkName _title, unsigned int size) :
+    chunkSize(size),
+    title(_title)
+{
 }
 
 ChunkHeader::ChunkHeader(std::fstream& adtFile)
 {
-    adtFile.read(reinterpret_cast<char *>(title), sizeof(ChunkHeader));
+    adtFile.read(reinterpret_cast<char *>(this), sizeof(ChunkHeader));
 }
 
 std::ostream& operator<< (std::ostream &stream, ChunkHeader& me) 
 {
-    stream.write(me.title, sizeof(ChunkHeader));
+    stream.write(reinterpret_cast<char*>(&me), sizeof(ChunkHeader));
     return stream;
 }
 
-char* ChunkHeader::InvertTitle(char* title) 
+void ChunkHeader::CheckTitle(std::string_view checkTitle) const
 {
-    char* newTitle = new char[4];
-    newTitle[0] = title[3];
-    newTitle[1] = title[2];
-    newTitle[2] = title[1];
-    newTitle[3] = title[0];
-    return newTitle;
+    if (checkTitle.size() != CHUNK_NAME_SIZE)
+        throw ("Invalid chunk name size");
+
+    for (unsigned int i = 0; i < CHUNK_NAME_SIZE; ++i)
+        if (title[i] != checkTitle[CHUNK_NAME_SIZE - 1 - i])
+            throw ("Invalid chunk name");
 }

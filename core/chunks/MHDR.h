@@ -30,9 +30,7 @@ public:
      {
         adtFile.seekg(startByte);
         ChunkHeader MHDR_CHeader(adtFile);
-        if (std::strncmp(MHDR_CHeader.title,"RDHM",4) != 0)
-            throw("Invalid Header");
-
+        MHDR_CHeader.CheckTitle("MHDR");
         adtFile.read(reinterpret_cast<char *>(&flags), sizeof(MHDR));
      }
 

@@ -1,7 +1,7 @@
 #ifndef MCIN_H
 #define MCIN_H
 
-#include "chunkHeader.h"
+#include "ChunkHeader.h"
 
 struct MCINEntry
 {
@@ -21,8 +21,7 @@ public:
     {
         adtFile.seekg(startByte);
         ChunkHeader CHeader(adtFile);
-        if (std::strncmp(CHeader.title, "NICM", 4) != 0)
-            throw("MCIN constructor : Invalid Header\n");
+        CHeader.CheckTitle("MCIN");
 
         adtFile.read(reinterpret_cast<char*>(entries), sizeof(MCINEntry) * CHUNKS_PER_ADT);
     }
